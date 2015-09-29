@@ -1,6 +1,14 @@
 from tactical_dolls.models import DollEffect, DollEffectGrid, DollEffectPos, DollStatus
 
 
+class Formula:
+    def __init__(self, **kwargs):
+        self.id = kwargs.get('id')
+        self.center = kwargs.get('center')
+        self.effect = [item for item in DollEffect.objects.filter(doll__id=self.id)][0]
+        self.effect_pos = [item for item in DollEffectPos.objects.filter(doll__id=self.id)]
+
+
 def doll_position(**kwargs):
     """
     전술 인형 중심 위치에따라 자동으로 이펙트 데이터 적용 위치 환산
