@@ -2,7 +2,12 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-ROOT_DIT = os.path.join(BASE_DIR)
+ROOT_DIT = os.path.dirname(BASE_DIR)
+
+MEDIA_ROOT = os.path.join(ROOT_DIT, '.media')
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(ROOT_DIT, '.static')
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'fei%3#vc_k*(f6y+)@2!)$gpa%(f2796@iu!335!9ro_@#@719'
@@ -12,7 +17,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'members',
     'tactical_dolls',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,6 +39,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+AUTH_USER_MODEL = 'members.User'
 
 TEMPLATES = [
     {
