@@ -3,5 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True)
     profile_image = models.ImageField(upload_to='members_profile')
     is_facebook = models.BooleanField(default=False, blank=True)
+    is_kakao = models.BooleanField(default=False, blank=True)
