@@ -13,6 +13,11 @@ class UserAdmin(BaseUserAdmin):
                 'password',
             ),
         }),
+        ('닉네임',{
+            'fields':(
+                'display_name',
+            ),
+        }),
         ('이메일', {
             'fields': (
                 'email',
