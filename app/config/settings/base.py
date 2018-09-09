@@ -7,7 +7,7 @@ ROOT_DIT = os.path.dirname(BASE_DIR)
 MEDIA_ROOT = os.path.join(ROOT_DIT, '.media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(ROOT_DIT, '.static')
-
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'fei%3#vc_k*(f6y+)@2!)$gpa%(f2796@iu!335!9ro_@#@719'
