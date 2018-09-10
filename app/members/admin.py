@@ -13,8 +13,8 @@ class UserAdmin(BaseUserAdmin):
                 'password',
             ),
         }),
-        ('닉네임',{
-            'fields':(
+        ('닉네임', {
+            'fields': (
                 'display_name',
             ),
         }),
