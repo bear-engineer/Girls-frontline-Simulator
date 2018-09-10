@@ -11,3 +11,4 @@ class User(AbstractUser):
     profile_image = models.ImageField(upload_to='members_profile', blank=True)
     is_facebook = models.BooleanField(default=False, blank=True)
     is_kakao = models.BooleanField(default=False, blank=True)
+    created_at = models.DateField(auto_now_add=True)

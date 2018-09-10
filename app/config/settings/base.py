@@ -1,16 +1,20 @@
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-ROOT_DIT = os.path.dirname(BASE_DIR)
+ROOT_DIR = os.path.dirname(BASE_DIR)
 
-MEDIA_ROOT = os.path.join(ROOT_DIT, '.media')
+SECRET_ROOT = os.path.join(ROOT_DIR, '.secrets')
+MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(ROOT_DIT, '.static')
+STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
+secrets = json.load(open(os.path.join(SECRET_ROOT, 'secrets.json')))
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fei%3#vc_k*(f6y+)@2!)$gpa%(f2796@iu!335!9ro_@#@719'
+SECRET_KEY = secrets['SECRET_KEY']
 
 ALLOWED_HOSTS = []
 
@@ -19,7 +23,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'members',
     'tactical_dolls',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,8 +60,6 @@ TEMPLATES = [
         },
     },
 ]
-
-
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
