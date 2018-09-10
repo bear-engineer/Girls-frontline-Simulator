@@ -1,5 +1,7 @@
 from django.db import models
 
+pars_url = 'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
+
 
 class Dolls(models.Model):
     DOLL_TYPE = (
@@ -16,7 +18,7 @@ class Dolls(models.Model):
         ('3', '★★★'),
         ('4', '★★★★'),
         ('5', '★★★★★'),
-        ('E', 'EXTRA'),
+        # ('E', 'EXTRA'),
     )
 
     doll_no = models.PositiveIntegerField(verbose_name='인형 품번')
@@ -66,3 +68,13 @@ class DollsSDImage(models.Model):
     doll_sd_move_image = models.ImageField(upload_to='doll_sd_image', blank=True, verbose_name='SD 이동 일러스트')
     doll_sd_victory1_image = models.ImageField(upload_to='doll_sd_image', blank=True, verbose_name='SD 승리1 일러스트')
     doll_sd_victory2_image = models.ImageField(upload_to='doll_sd_image', blank=True, verbose_name='SD 승리2 일러스트')
+
+
+class DollsDrop(models.Model):
+    doll = models.ForeignKey(
+        Dolls,
+        on_delete=models.CASCADE,
+        related_name='doll_drop',
+        blank=True
+    )
+    doll_drop_field = models.CharField(max_length=30, blank=True, verbose_name='Drop Fields')
