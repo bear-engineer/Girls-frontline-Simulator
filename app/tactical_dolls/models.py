@@ -1,9 +1,12 @@
 from django.db import models
 
-pars_url = 'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
+# pars_url = 'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
 
 
 class Dolls(models.Model):
+    """
+    전술 인형 정보
+    """
     DOLL_TYPE = (
         ('hg', 'HG'),
         ('smg', 'SMG'),
@@ -39,7 +42,7 @@ class Dolls(models.Model):
     doll_hp = models.PositiveSmallIntegerField(verbose_name='체력', blank=True)
     doll_fp = models.PositiveSmallIntegerField(verbose_name='화력', blank=True)
     doll_range = models.PositiveSmallIntegerField(verbose_name='사거리(철혈)', blank=True)
-    doll_rof = models.PositiveSmallIntegerField(verbose_name='사속', blank=True)
+    doll_rate = models.PositiveSmallIntegerField(verbose_name='사속', blank=True)
     doll_shield = models.PositiveSmallIntegerField(verbose_name='보호막(철혈)', blank=True)
     doll_speed = models.PositiveSmallIntegerField(verbose_name='이동속도', blank=True)
     doll_crit = models.PositiveSmallIntegerField(verbose_name='크리티컬 확률(%)', blank=True)
@@ -59,7 +62,7 @@ class DollsSkinImage(models.Model):
     )
     doll_skin_name = models.CharField(max_length=50, blank=True, verbose_name='스킨 이름')
     doll_skin_story = models.TextField(max_length=255, blank=True, verbose_name='스킨 스토리')
-    doll_sd_skin = models.ImageField(upload_to='doll_sd_skins', verbose_name='스킨 SD 일러스트')
+    doll_sd_skin = models.ImageField(upload_to='doll_sd_skins', blank=True, verbose_name='스킨 SD 일러스트')
     doll_default_skin = models.ImageField(upload_to='doll_default_skins', blank=True, verbose_name='스킨 기본 일러스트')
     doll_damage_skin = models.ImageField(upload_to='doll_damage_skins', blank=True, verbose_name='스킨 파손 일러트스')
 
