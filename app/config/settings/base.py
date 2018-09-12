@@ -5,7 +5,7 @@ import json
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 
-SECRET_ROOT = os.path.join(ROOT_DIR, '.secrets')
+SECRET_ROOT = os.path.join(ROOT_DIR, '.secrets_key')
 MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
