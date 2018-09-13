@@ -1,7 +1,6 @@
 import requests
 from django.http import HttpResponse
 from django.views import View
-import pprint
 
 from tactical_dolls.models import Dolls
 
@@ -11,17 +10,13 @@ class Update(View):
         data_source = requests.get(
             'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
         ).json()
-        # pprint.pprint(data_source[1])
-        # data_count = len(data_source)
-        # print(data_count)
 
         for source in data_source:
             try:
-                armor_piercing = source['stats']['armorpiercing']
-                print(armor_piercing)
+                armor_piercing = source['stats']['armorPiercing']
+
             except KeyError:
                 armor_piercing = 0
-                print(armor_piercing)
 
             try:
                 armor = source['stats']['armor']
@@ -62,12 +57,25 @@ class Update(View):
             except KeyError:
                 doll_cv = None
 
+            try:
+                doll_krname = source['krName']
+            except KeyError:
+                doll_krname = None
+            try:
+                doll_nightview = source['doll_nightview']
+            except KeyError:
+                doll_nightview = 0
+            try:
+                doll_cooldown = source['doll_cooldown']
+            except KeyError:
+                doll_cooldown = 0
+
             dolls_data = {
+                'doll_krname': doll_krname,
                 'doll_no': source['id'],
                 'doll_manufacturing_time': build_time,
-
                 'doll_rating': source['rank'],
-                'doll_type': source['type'],
+                'doll_type': source['type'].upper(),
                 'doll_illustrator_creator': doll_illustrator_creator,
                 'doll_cv': doll_cv,
                 'doll_hp': source['stats']['hp'],
@@ -81,8 +89,10 @@ class Update(View):
                 'doll_armor': armor,
                 'doll_range': doll_range,
                 'doll_shield': doll_shield,
-                'doll_critdmg': doll_critdmg,
                 'doll_bullet': doll_bullet,
+                'doll_critdmg': doll_critdmg,
+                'doll_nightview': doll_nightview,
+                'doll_cooldown': doll_cooldown,
             }
             dolls, dolls_create = Dolls.objects.update_or_create(
                 doll_name=source['name'],
@@ -90,5 +100,6 @@ class Update(View):
             )
 
             dolls.save()
+            print(f"{source['name']} 저장 성공")
 
         return HttpResponse(data_source, content_type='application/json')

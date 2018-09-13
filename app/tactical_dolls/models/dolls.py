@@ -32,7 +32,7 @@ class Dolls(models.Model):
 
     doll_no = models.PositiveIntegerField(verbose_name='인형 품번')
     doll_name = models.CharField(max_length=50, verbose_name='인형 이름')
-    doll_krname = models.CharField(max_length=50, verbose_name='인형 이름(한국어)', blank=True)
+    doll_krname = models.CharField(max_length=50, verbose_name='인형 이름(한국어)', blank=True, null=True)
     doll_type = models.CharField(max_length=3, choices=DOLL_TYPE, verbose_name='인형 유형')
     doll_rating = models.CharField(max_length=1, choices=DOLL_RATING, verbose_name='인형 등급')
     # doll_thumbnail_image = models.ImageField(upload_to='doll_thumbnail_images', verbose_name='아이콘 일러스트')
@@ -55,6 +55,6 @@ class Dolls(models.Model):
     doll_crit = models.PositiveSmallIntegerField(verbose_name='크리티컬 확률(%)', blank=True)
     doll_critdmg = models.PositiveSmallIntegerField(verbose_name='크리티컬 데미지 추가 증가량(%)', blank=True)
     doll_armorpiercing = models.PositiveSmallIntegerField(verbose_name='장갑 관통', blank=True)
-    # doll_nightview = models.PositiveSmallIntegerField(verbose_name='야간 명중률(%)', blank=True)
-    # doll_cooldown = models.PositiveSmallIntegerField(verbose_name='쿨타임 감소(%)', blank=True)
+    doll_nightview = models.PositiveSmallIntegerField(verbose_name='야간 명중률(%)', blank=True, null=True, default=0)
+    doll_cooldown = models.PositiveSmallIntegerField(verbose_name='쿨타임 감소(%)', blank=True, null=True, default=0)
     doll_bullet = models.PositiveSmallIntegerField(verbose_name='장탄 수', blank=True)
