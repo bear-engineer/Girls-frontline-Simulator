@@ -23,6 +23,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'members',
     'tactical_dolls',
+    'tactical_fairys',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
