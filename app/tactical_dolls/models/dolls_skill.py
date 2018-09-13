@@ -13,3 +13,6 @@ class DollsSkill(models.Model):
         related_name='doll_skill',
         blank=True,
     )
+
+
+
