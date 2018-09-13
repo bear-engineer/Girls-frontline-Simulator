@@ -6,6 +6,7 @@ __all__ = (
 
 
 # 크롤링정보 요청 URL
+# 인형정보
 # pars_url = 'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
 
 
@@ -40,7 +41,7 @@ class Dolls(models.Model):
     doll_Introduce = models.TextField(max_length=255, verbose_name='소개', blank=True)
     doll_cv = models.CharField(max_length=50, blank=True, verbose_name='성우')
     doll_illustrator_creator = models.CharField(max_length=50, blank=True, verbose_name='일러스트레이터')
-    doll_manufacturing_time = models.CharField(max_length=20, verbose_name='제조 시간', blank=True)
+    doll_manufacturing_time = models.PositiveSmallIntegerField(verbose_name='제조 시간', blank=True)
     doll_is_upgrade = models.BooleanField(default=False, verbose_name='개조', blank=True)
     doll_armor = models.PositiveSmallIntegerField(verbose_name='장갑', blank=True)
     doll_eva = models.PositiveSmallIntegerField(verbose_name='회피', blank=True)
