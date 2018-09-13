@@ -6,6 +6,11 @@ name = "pypi"
 [packages]
 django = "*"
 pillow = "*"
+requests = "*"
+"bs4" = "*"
+lxml = "*"
+djangorestframework = "*"
+django-filter = "*"
 
 [dev-packages]
 ipython = "*"
