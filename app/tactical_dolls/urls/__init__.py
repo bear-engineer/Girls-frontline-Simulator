@@ -1,5 +1,8 @@
 from django.urls import path
 
-urlpatterns = [
+from tactical_dolls.views import Update
 
+app_name = 'dolls'
+urlpatterns = [
+    path('update/', Update.as_view(), name='dolls-update'),
 ]
