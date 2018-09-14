@@ -33,7 +33,7 @@ class Doll(models.Model):
     illust = models.CharField(max_length=50, verbose_name='일러스트레이터', blank=True, null=True)
     voice = models.CharField(max_length=50, verbose_name='성우', blank=True, null=True)
     build_time = models.PositiveSmallIntegerField(verbose_name='제조 시간', blank=True, null=True)
-    is_upgrade = models.BooleanField(default=False, verbose_name='개조', blank=True)
+    is_upgrade = models.BooleanField(verbose_name='개조', blank=True)
 
     # doll_thumbnail_image = models.ImageField(upload_to='doll_thumbnail_images', verbose_name='아이콘 일러스트')
     # doll_default_image = models.ImageField(upload_to='doll_default_images', verbose_name='기본 일러스트')

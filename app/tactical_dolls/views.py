@@ -68,6 +68,11 @@ class Update(View):
             except KeyError:
                 drop_field = None
 
+            if 'Mod' in source['name']:
+                is_upgrade = True
+            else:
+                is_upgrade = False
+
             doll_data = {
                 'kr_name': krname,
                 'doll_id': source['id'],
@@ -76,6 +81,7 @@ class Update(View):
                 'type': source['type'].upper(),
                 'illust': illust,
                 'voice': voice,
+                'is_upgrade': is_upgrade,
             }
 
             doll_status_data = {
