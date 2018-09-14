@@ -13,55 +13,48 @@ class Update(View):
         ).json()
 
         for source in data_source:
-            try:
-                armor_piercing = source['stats']['armorPiercing']
-
-            except KeyError:
-                armor_piercing = 0
 
             try:
-                armor = source['stats']['armor']
+                illust = source['illust']
             except KeyError:
-                armor = 0
-
-            try:
-                range = source['stats']['range']
-            except KeyError:
-                range = 0
-
-            try:
-                shield = source['stats']['shield']
-            except KeyError:
-                shield = 0
-
-            try:
-                critdmg = source['stats']['critDmg']
-            except KeyError:
-                critdmg = 0
-
-            try:
-                bullet = source['stats']['bullet']
-            except KeyError:
-                bullet = 0
-            try:
-                build_time = source['buildTime']
-            except KeyError:
-                build_time = 0
-
-            try:
-                illustrator_creator = source['illust']
-            except KeyError:
-                illustrator_creator = None
+                illust = None
 
             try:
                 voice = source['voice']
             except KeyError:
                 voice = None
-
             try:
                 krname = source['krName']
             except KeyError:
                 krname = None
+            try:
+                build_time = source['buildTime']
+            except KeyError:
+                build_time = 0
+            try:
+                armor_piercing = source['stats']['armorPiercing']
+            except KeyError:
+                armor_piercing = 0
+            try:
+                armor = source['stats']['armor']
+            except KeyError:
+                armor = 0
+            try:
+                range = source['stats']['range']
+            except KeyError:
+                range = 0
+            try:
+                shield = source['stats']['shield']
+            except KeyError:
+                shield = 0
+            try:
+                critdmg = source['stats']['critDmg']
+            except KeyError:
+                critdmg = 0
+            try:
+                bullet = source['stats']['bullet']
+            except KeyError:
+                bullet = 0
             try:
                 night_view = source['night_view']
             except KeyError:
@@ -70,6 +63,10 @@ class Update(View):
                 cool_down = source['cool_down']
             except KeyError:
                 cool_down = 0
+            try:
+                drop_field = source['drop']
+            except KeyError:
+                drop_field = None
 
             doll_data = {
                 'kr_name': krname,
@@ -77,7 +74,7 @@ class Update(View):
                 'build_time': build_time,
                 'rank': source['rank'],
                 'type': source['type'].upper(),
-                'illust': illustrator_creator,
+                'illust': illust,
                 'voice': voice,
             }
 
@@ -108,6 +105,17 @@ class Update(View):
                 hp=source['stats']['hp'],
                 defaults=doll_status_data,
             )
+
+            # 해당하는 필드가 없는 경우 None
+            try:
+                for doll_drop_field in drop_field:
+                    doll.doll_drop.update_or_create(
+                        drop_field=doll_drop_field,
+                    )
+            except TypeError:
+                doll.doll_drop.update_or_create(
+                    drop_field=None,
+                )
             doll.save()
             print(f"{source['name']} 저장 성공")
 

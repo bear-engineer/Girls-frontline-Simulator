@@ -13,4 +13,4 @@ class DollDrop(models.Model):
         related_name='doll_drop',
         blank=True,
     )
-    drop_field = models.CharField(max_length=30, blank=True, verbose_name='Drop Fields')
+    drop_field = models.CharField(max_length=30, verbose_name='Drop Fields', blank=True, null=True)
