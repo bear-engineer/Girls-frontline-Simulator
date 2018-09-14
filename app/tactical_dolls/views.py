@@ -6,12 +6,18 @@ from tactical_dolls.models import Doll
 
 
 class Update(View):
+    """
+    인형 정보를 업데이트 합니다.
+    """
+
     def get(request, *args, **kwargs):
 
+        # 인형 데이터 Json source
         data_source = requests.get(
             'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
         ).json()
 
+        # 모든 데이터를 순차적으로 DB에 저장
         for source in data_source:
 
             try:
@@ -73,6 +79,18 @@ class Update(View):
                 drop_field = source['drop']
             except KeyError:
                 drop_field = None
+            try:
+                effect_type = source['effect']['effectType']
+            except KeyError:
+                effect_type = None
+            try:
+                effect_center = source['effect']['effectCenter']
+            except KeyError:
+                effect_center = None
+            try:
+                effect_pos = source['effect']['effectPos']
+            except KeyError:
+                effect_pos = None
 
             if 'Mod' in source['name']:
                 is_upgrade = True
@@ -107,6 +125,11 @@ class Update(View):
                 'night_view': night_view,
                 'cool_down': cool_down,
             }
+            doll_effect_data = {
+                'effect_type': effect_type.upper(),
+                'effect_center': effect_center,
+                'effect_pos': effect_pos,
+            }
 
             doll, doll_create = Doll.objects.update_or_create(
                 name=source['name'],
@@ -116,6 +139,11 @@ class Update(View):
             doll.doll_status.update_or_create(
                 hp=source['stats']['hp'],
                 defaults=doll_status_data,
+            )
+
+            doll.doll_effect.update_or_create(
+                # effect_center=effect_type,
+                defaults=doll_effect_data,
             )
 
             # 해당하는 필드가 없는 경우 None
@@ -128,6 +156,7 @@ class Update(View):
                 doll.doll_drop.update_or_create(
                     drop_field=None,
                 )
+
             doll.save()
             print(f"{source['name']} 저장 성공")
 

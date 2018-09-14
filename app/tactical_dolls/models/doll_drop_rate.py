@@ -7,6 +7,9 @@ __all__ = (
 
 
 class DollDrop(models.Model):
+    """
+    인형 획득 위치
+    """
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,

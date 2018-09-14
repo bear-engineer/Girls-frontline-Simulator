@@ -7,6 +7,9 @@ __all__ = (
 
 
 class DollSkill(models.Model):
+    """
+    인형 스킬
+    """
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,

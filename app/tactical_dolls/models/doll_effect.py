@@ -1,33 +1,25 @@
+from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 from .doll import Doll
 
 __all__ = (
-    'DollEffectType',
+    'DollEffect',
     'DollEffectGrid',
-    'DollEffectPos',
 )
 
 
-class DollEffectType(models.Model):
+class DollEffect(models.Model):
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,
-        related_name='doll_effect_type',
+        related_name='doll_effect',
         blank=True
     )
 
-    effect_type = models.CharField(max_length=50, blank=True)
-    effect_center = models.PositiveSmallIntegerField()
-
-
-class DollEffectPos(models.Model):
-    doll = models.ForeignKey(
-        Doll,
-        on_delete=models.CASCADE,
-        related_name='doll_effect_pos',
-        blank=True
-    )
-    effect_pos = models.PositiveSmallIntegerField()
+    effect_type = models.CharField(max_length=100, blank=True, null=True)
+    effect_center = models.PositiveSmallIntegerField(blank=True, null=True)
+    effect_pos = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50, blank=True,
+                                  null=True)
 
 
 class DollEffectGrid(models.Model):

@@ -8,6 +8,9 @@ __all__ = (
 
 
 class DollSkinImage(models.Model):
+    """
+    인형 이미지 스킨
+    """
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,

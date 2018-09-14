@@ -8,6 +8,9 @@ __all__ = (
 
 
 class DollStatus(models.Model):
+    """
+    인형 능력치
+    """
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,
