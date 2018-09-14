@@ -21,6 +21,9 @@ class DollEffect(models.Model):
     effect_pos = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50, blank=True,
                                   null=True)
 
+    def __str__(self):
+        return self.effect_pos
+
 
 class DollEffectGrid(models.Model):
     doll = models.ForeignKey(

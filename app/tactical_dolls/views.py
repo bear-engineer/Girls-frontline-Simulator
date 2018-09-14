@@ -20,87 +20,39 @@ class Update(View):
         # 모든 데이터를 순차적으로 DB에 저장
         for source in data_source:
 
-            try:
-                if source['illust'] == '':
-                    illust = None
-                else:
-                    illust = source['illust']
-            except KeyError:
-                illust = None
-
-            try:
-                if source['voice'] == '':
-                    voice = None
-                else:
-                    voice = source['voice']
-            except KeyError:
-                voice = None
-            try:
-                krname = source['krName']
-            except KeyError:
-                krname = None
-            try:
-                build_time = source['buildTime']
-            except KeyError:
-                build_time = 0
-            try:
-                armor_piercing = source['stats']['armorPiercing']
-            except KeyError:
-                armor_piercing = 0
-            try:
-                armor = source['stats']['armor']
-            except KeyError:
-                armor = 0
-            try:
-                range = source['stats']['range']
-            except KeyError:
-                range = 0
-            try:
-                shield = source['stats']['shield']
-            except KeyError:
-                shield = 0
-            try:
-                critdmg = source['stats']['critDmg']
-            except KeyError:
-                critdmg = 0
-            try:
-                bullet = source['stats']['bullet']
-            except KeyError:
-                bullet = 0
-            try:
-                night_view = source['night_view']
-            except KeyError:
-                night_view = 0
-            try:
-                cool_down = source['cool_down']
-            except KeyError:
-                cool_down = 0
-            try:
-                drop_field = source['drop']
-            except KeyError:
-                drop_field = None
-            try:
-                effect_type = source['effect']['effectType']
-            except KeyError:
-                effect_type = None
-            try:
-                effect_center = source['effect']['effectCenter']
-            except KeyError:
-                effect_center = None
-            try:
-                effect_pos = source['effect']['effectPos']
-            except KeyError:
-                effect_pos = None
-
             if 'Mod' in source['name']:
                 is_upgrade = True
             else:
                 is_upgrade = False
 
+            # info
+            illust = source.get('illust')
+            voice = source.get('voice')
+            krName = source.get('krName')
+            buildTime = source.get('buildTime')
+
+            # drop
+            drop_field = source.get('drop')
+
+            # effect
+            effect_type = source['effect'].get('effectType')
+            effect_center = source['effect'].get('effectCenter')
+            effect_pos = source['effect'].get('effectPos')
+
+            # status
+            armor_piercing = source['stats'].get('armorPiercing')
+            armor = source['stats'].get('armor')
+            range = source['stats'].get('range')
+            shield = source['stats'].get('shield')
+            critdmg = source['stats'].get('critDmg')
+            bullet = source['stats'].get('bullet')
+            night_view = source['stats'].get('night_view')
+            cool_down = source['stats'].get('cool_down')
+
             doll_data = {
-                'kr_name': krname,
+                'kr_name': krName,
                 'doll_id': source['id'],
-                'build_time': build_time,
+                'build_time': buildTime,
                 'rank': source['rank'],
                 'type': source['type'].upper(),
                 'illust': illust,
@@ -135,9 +87,17 @@ class Update(View):
                 name=source['name'],
                 defaults=doll_data,
             )
-
+            # data_roop = {
+            #     'data_object': 'doll_status,doll_effect'.split(','),
+            #     'data_defaults': 'doll_status_data,doll_effect_data'.split(','),
+            # }
+            #
+            # for roop in data_roop:
+            #     doll.roop['data_object'].update_or_create(
+            #         defaults=roop['data_defaults']
+            #     )
             doll.doll_status.update_or_create(
-                hp=source['stats']['hp'],
+                # hp=source['stats']['hp'],
                 defaults=doll_status_data,
             )
 
@@ -147,16 +107,9 @@ class Update(View):
             )
 
             # 해당하는 필드가 없는 경우 None
-            try:
-                for doll_drop_field in drop_field:
-                    doll.doll_drop.update_or_create(
-                        drop_field=doll_drop_field,
-                    )
-            except TypeError:
-                doll.doll_drop.update_or_create(
-                    drop_field=None,
-                )
-
+            doll.doll_drop.update_or_create(
+                drop_field=drop_field,
+            )
             doll.save()
             print(f"{source['name']} 저장 성공")
 
