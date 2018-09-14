@@ -1,4 +1,4 @@
-from .dolls import *
+from .doll import *
 from .doll_drop_rate import *
 from .doll_illust import *
 from .doll_skill import *

@@ -1,15 +1,15 @@
 from django.db import models
-from .dolls import Dolls
+from .doll import Doll
 
 __all__ = (
-    'DollsSkinImage',
-    'DollsSDImage',
+    'DollSkinImage',
+    'DollSDImage',
 )
 
 
-class DollsSkinImage(models.Model):
+class DollSkinImage(models.Model):
     doll = models.ForeignKey(
-        Dolls,
+        Doll,
         on_delete=models.CASCADE,
         related_name='doll_skins',
         blank=True
@@ -21,9 +21,9 @@ class DollsSkinImage(models.Model):
     doll_damage_skin = models.ImageField(upload_to='doll_damage_skins', blank=True, verbose_name='스킨 파손 일러트스')
 
 
-class DollsSDImage(models.Model):
+class DollSDImage(models.Model):
     doll = models.ForeignKey(
-        Dolls,
+        Doll,
         on_delete=models.CASCADE,
         related_name='doll_sd',
         blank=True

@@ -1,14 +1,14 @@
 from django.db import models
-from .dolls import Dolls
+from .doll import Doll
 
 __all__ = (
-    'DollsSkill',
+    'DollSkill',
 )
 
 
-class DollsSkill(models.Model):
+class DollSkill(models.Model):
     doll = models.ForeignKey(
-        Dolls,
+        Doll,
         on_delete=models.CASCADE,
         related_name='doll_skill',
         blank=True,

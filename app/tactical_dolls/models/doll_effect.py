@@ -1,16 +1,16 @@
 from django.db import models
-from .dolls import Dolls
+from .doll import Doll
 
 __all__ = (
-    'DollsEffectType',
-    'DollsEffectGrid',
-    'DollsEffectPos',
+    'DollEffectType',
+    'DollEffectGrid',
+    'DollEffectPos',
 )
 
 
-class DollsEffectType(models.Model):
+class DollEffectType(models.Model):
     doll = models.ForeignKey(
-        Dolls,
+        Doll,
         on_delete=models.CASCADE,
         related_name='doll_effect_type',
         blank=True
@@ -20,9 +20,9 @@ class DollsEffectType(models.Model):
     effect_center = models.PositiveSmallIntegerField()
 
 
-class DollsEffectPos(models.Model):
+class DollEffectPos(models.Model):
     doll = models.ForeignKey(
-        Dolls,
+        Doll,
         on_delete=models.CASCADE,
         related_name='doll_effect_pos',
         blank=True
@@ -30,9 +30,9 @@ class DollsEffectPos(models.Model):
     effect_pos = models.PositiveSmallIntegerField()
 
 
-class DollsEffectGrid(models.Model):
+class DollEffectGrid(models.Model):
     doll = models.ForeignKey(
-        Dolls,
+        Doll,
         on_delete=models.CASCADE,
         related_name='doll_effect_grid',
         blank=True

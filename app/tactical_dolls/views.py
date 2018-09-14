@@ -2,7 +2,7 @@ import requests
 from django.http import HttpResponse
 from django.views import View
 
-from tactical_dolls.models import Dolls
+from tactical_dolls.models import Doll
 
 
 class Update(View):
@@ -94,7 +94,7 @@ class Update(View):
                 'doll_nightview': doll_nightview,
                 'doll_cooldown': doll_cooldown,
             }
-            dolls, dolls_create = Dolls.objects.update_or_create(
+            dolls, dolls_create = Doll.objects.update_or_create(
                 doll_name=source['name'],
                 defaults=dolls_data,
             )
