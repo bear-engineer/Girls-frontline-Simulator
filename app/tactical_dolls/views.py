@@ -15,12 +15,18 @@ class Update(View):
         for source in data_source:
 
             try:
-                illust = source['illust']
+                if source['illust'] == '':
+                    illust = None
+                else:
+                    illust = source['illust']
             except KeyError:
                 illust = None
 
             try:
-                voice = source['voice']
+                if source['voice'] == '':
+                    voice = None
+                else:
+                    voice = source['voice']
             except KeyError:
                 voice = None
             try:
