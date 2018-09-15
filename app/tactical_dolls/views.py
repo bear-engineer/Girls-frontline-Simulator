@@ -26,10 +26,10 @@ class Update(View):
                 is_upgrade = False
 
             # info
-            illust = source.get('illust')
-            voice = source.get('voice')
-            krName = source.get('krName')
-            buildTime = source.get('buildTime')
+            # illust = source.get('illust')
+            # voice = source.get('voice')
+            # krName = source.get('krName')
+            # buildTime = source.get('buildTime')
 
             # drop
             drop_field = source.get('drop')
@@ -50,13 +50,13 @@ class Update(View):
             cool_down = source['stats'].get('cool_down')
 
             doll_data = {
-                'kr_name': krName,
+                'kr_name': source.get('krName'),
                 'doll_id': source['id'],
-                'build_time': buildTime,
+                'build_time': source.get('buildTime'),
                 'rank': source['rank'],
                 'type': source['type'].upper(),
-                'illust': illust,
-                'voice': voice,
+                'illust': source.get('illust'),
+                'voice': source.get('voice'),
                 'is_upgrade': is_upgrade,
             }
 
@@ -87,15 +87,7 @@ class Update(View):
                 name=source['name'],
                 defaults=doll_data,
             )
-            # data_roop = {
-            #     'data_object': 'doll_status,doll_effect'.split(','),
-            #     'data_defaults': 'doll_status_data,doll_effect_data'.split(','),
-            # }
-            #
-            # for roop in data_roop:
-            #     doll.roop['data_object'].update_or_create(
-            #         defaults=roop['data_defaults']
-            #     )
+
             doll.doll_status.update_or_create(
                 # hp=source['stats']['hp'],
                 defaults=doll_status_data,
