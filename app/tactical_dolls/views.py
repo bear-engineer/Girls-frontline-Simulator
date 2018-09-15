@@ -20,34 +20,11 @@ class Update(View):
         # 모든 데이터를 순차적으로 DB에 저장
         for source in data_source:
 
-            if 'Mod' in source['name']:
+            # 개조된 인형을 구
+            if 'Mod' in source.get('codename'):
                 is_upgrade = True
             else:
                 is_upgrade = False
-
-            # info
-            # illust = source.get('illust')
-            # voice = source.get('voice')
-            # krName = source.get('krName')
-            # buildTime = source.get('buildTime')
-
-            # drop
-            drop_field = source.get('drop')
-
-            # effect
-            effect_type = source['effect'].get('effectType')
-            effect_center = source['effect'].get('effectCenter')
-            effect_pos = source['effect'].get('effectPos')
-
-            # status
-            armor_piercing = source['stats'].get('armorPiercing')
-            armor = source['stats'].get('armor')
-            range = source['stats'].get('range')
-            shield = source['stats'].get('shield')
-            critdmg = source['stats'].get('critDmg')
-            bullet = source['stats'].get('bullet')
-            night_view = source['stats'].get('night_view')
-            cool_down = source['stats'].get('cool_down')
 
             doll_data = {
                 'kr_name': source.get('krName'),
@@ -67,24 +44,24 @@ class Update(View):
                 'hit': source['stats']['hit'],
                 'speed': source['stats']['speed'],
                 'rate': source['stats']['rate'],
-                'armor_piercing': armor_piercing,
-                'crit': source['stats']['crit'],
-                'armor': armor,
-                'range': range,
-                'shield': shield,
-                'bullet': bullet,
-                'critdmg': critdmg,
-                'night_view': night_view,
-                'cool_down': cool_down,
+                'armor_piercing': source['stats'].get('armorPiercing'),
+                'crit': source['stats']['criticalPercent'],
+                'armor': source['stats'].get('armorPiercing'),
+                'range': source['stats'].get('range'),
+                'shield': source['stats'].get('shield'),
+                'bullet': source['stats'].get('bullet'),
+                'critdmg': source['stats'].get('critDmg'),
+                'night_view': source['stats'].get('night_view'),
+                'cool_down': source['stats'].get('cool_down'),
             }
             doll_effect_data = {
-                'effect_type': effect_type.upper(),
-                'effect_center': effect_center,
-                'effect_pos': effect_pos,
+                'effect_type': source['effect'].get('effectType').upper(),
+                'effect_center': source['effect'].get('effectCenter'),
+                'effect_pos': source['effect'].get('effectPos'),
             }
 
             doll, doll_create = Doll.objects.update_or_create(
-                name=source['name'],
+                name=source.get('codename'),
                 defaults=doll_data,
             )
 
@@ -98,11 +75,10 @@ class Update(View):
                 defaults=doll_effect_data,
             )
 
-            # 해당하는 필드가 없는 경우 None
             doll.doll_drop.update_or_create(
-                drop_field=drop_field,
+                drop_field=source.get('drop'),
             )
             doll.save()
-            print(f"{source['name']} 저장 성공")
+            print(f"{source['codename']} 저장 성공")
 
         return HttpResponse('update')
