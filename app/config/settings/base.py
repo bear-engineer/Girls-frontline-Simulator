@@ -22,21 +22,29 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Add Module
     'members',
     'tactical_dolls',
     'tactical_fairys',
+
+    # Base Module
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # django REST
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
+
+    # Sentry
     'raven.contrib.django.raven_compat',
 ]
 
+# Sentry Setting
 RAVEN_CONFIG = {
     'dsn': secrets['SENTRY_DSN'],
     # If you are using git, you can also automatically configure the
