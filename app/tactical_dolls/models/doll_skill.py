@@ -14,7 +14,7 @@ class DollSkill01(models.Model):
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,
-        related_name='doll_skill_data',
+        related_name='doll_skill_data01',
         blank=True,
     )
 
@@ -29,7 +29,7 @@ class DollSkill02(models.Model):
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,
-        related_name='doll_skill_data',
+        related_name='doll_skill_data02',
         blank=True,
     )
 

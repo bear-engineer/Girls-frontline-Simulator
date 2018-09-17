@@ -8,7 +8,8 @@ from .models import (
     DollSDImage,
     DollEffect,
     DollEffectGrid,
-    DollSkill,
+    DollSkill01,
+    DollSkill02,
 )
 
 admin.site.register(Doll)
@@ -17,4 +18,5 @@ admin.site.register(DollSDImage)
 admin.site.register(DollDrop)
 admin.site.register(DollEffect)
 admin.site.register(DollEffectGrid)
-admin.site.register(DollSkill)
+admin.site.register(DollSkill01)
+admin.site.register(DollSkill02)

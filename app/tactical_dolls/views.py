@@ -26,58 +26,98 @@ class Update(View):
             else:
                 is_upgrade = False
 
+            try:
+                skill01_consumption = source['skill1']['consumption']
+                skill02_id = source['skill2'].get('id')
+                skill02_codename = source['skill2'].get('codename')
+                skill02_cooldowntype = source['skill2'].get('cooldownType')
+                skill02_initialcooldown = source['skill2'].get('initialCooldown')
+                skill02_consumption = source['skill2']['consumption']
+            except KeyError:
+                skill01_consumption = None
+                skill02_id = None
+                skill02_codename = None
+                skill02_cooldowntype = None
+                skill02_initialcooldown = None
+                skill02_consumption = None
+
             doll_data = {
-                'kr_name': source.get('krName'),
-                'doll_id': source['id'],
-                'build_time': source.get('buildTime'),
-                'rank': source['rank'],
-                'type': source['type'].upper(),
-                'illust': source.get('illust'),
-                'voice': source.get('voice'),
+                'id': source.get('id'),
+                'rank': source.get('rank'),
+                'type': source.get('type'),
+                'buildtime': source.get('buildTime'),
+                'codename': source.get('codename'),
+                'grow': source.get('grow'),
+                'equip01': source.get('equip1'),
+                'equip02': source.get('equip2'),
+                'equip03': source.get('equip3'),
+                'mindupdata': source.get('mindupdate'),
+                'skill01_id': source['skill1'].get('id'),
+                'skill01_codename': source['skill1'].get('codename'),
+                'skill01_cooldowntype': source['skill1'].get('cooldownType'),
+                'skill01_initialcooldown': source['skill1'].get('initialCooldown'),
+                'skill01_consumption': skill01_consumption,
+                'skill02_id': skill02_id,
+                'skill02_codename': skill02_codename,
+                'skill02_cooldowntype': skill02_cooldowntype,
+                'skill02_initialcooldown': skill02_initialcooldown,
+                'skill02_consumption': skill02_consumption,
+                'obtain': source.get('obtain'),
                 'is_upgrade': is_upgrade,
             }
 
-            doll_status_data = {
-                'hp': source['stats']['hp'],
-                'dodge': source['stats']['dodge'],
-                'pow': source['stats']['pow'],
-                'hit': source['stats']['hit'],
-                'speed': source['stats']['speed'],
-                'rate': source['stats']['rate'],
-                'armor_piercing': source['stats'].get('armorPiercing'),
-                'crit': source['stats']['criticalPercent'],
-                'armor': source['stats'].get('armorPiercing'),
-                'range': source['stats'].get('range'),
-                'shield': source['stats'].get('shield'),
-                'bullet': source['stats'].get('bullet'),
-                'critdmg': source['stats'].get('critDmg'),
-                'night_view': source['stats'].get('night_view'),
-                'cool_down': source['stats'].get('cool_down'),
-            }
-            doll_effect_data = {
-                'effect_type': source['effect'].get('effectType').upper(),
-                'effect_center': source['effect'].get('effectCenter'),
-                'effect_pos': source['effect'].get('effectPos'),
-            }
+            # doll_data = {
+            #     'kr_name': source.get('krName'),
+            #     'doll_id': source['id'],
+            #     'build_time': source.get('buildTime'),
+            #     'rank': source['rank'],
+            #     'type': source['type'].upper(),
+            #     'illust': source.get('illust'),
+            #     'voice': source.get('voice'),
+            #     'is_upgrade': is_upgrade,
+            # }
+
+            # doll_status_data = {
+            #     'hp': source['stats']['hp'],
+            #     'dodge': source['stats']['dodge'],
+            #     'pow': source['stats']['pow'],
+            #     'hit': source['stats']['hit'],
+            #     'speed': source['stats']['speed'],
+            #     'rate': source['stats']['rate'],
+            #     'armor_piercing': source['stats'].get('armorPiercing'),
+            #     'crit': source['stats']['criticalPercent'],
+            #     'armor': source['stats'].get('armorPiercing'),
+            #     'range': source['stats'].get('range'),
+            #     'shield': source['stats'].get('shield'),
+            #     'bullet': source['stats'].get('bullet'),
+            #     'critdmg': source['stats'].get('critDmg'),
+            #     'night_view': source['stats'].get('night_view'),
+            #     'cool_down': source['stats'].get('cool_down'),
+            # }
+            # doll_effect_data = {
+            #     'effect_type': source['effect'].get('effectType').upper(),
+            #     'effect_center': source['effect'].get('effectCenter'),
+            #     'effect_pos': source['effect'].get('effectPos'),
+            # }
 
             doll, doll_create = Doll.objects.update_or_create(
-                name=source.get('codename'),
+                id=source.get('id'),
                 defaults=doll_data,
             )
 
-            doll.doll_status.update_or_create(
-                # hp=source['stats']['hp'],
-                defaults=doll_status_data,
-            )
+            # doll.doll_status.update_or_create(
+            #     # hp=source['stats']['hp'],
+            #     defaults=doll_status_data,
+            # )
+            #
+            # doll.doll_effect.update_or_create(
+            #     # effect_center=effect_type,
+            #     defaults=doll_effect_data,
+            # )
 
-            doll.doll_effect.update_or_create(
-                # effect_center=effect_type,
-                defaults=doll_effect_data,
-            )
-
-            doll.doll_drop.update_or_create(
-                drop_field=source.get('drop'),
-            )
+            # doll.doll_drop.update_or_create(
+            #     drop_field=source.get('drop'),
+            # )
             doll.save()
             print(f"{source['codename']} 저장 성공")
 
