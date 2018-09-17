@@ -2,20 +2,36 @@ from django.db import models
 from .doll import Doll
 
 __all__ = (
-    'DollSkill',
+    'DollSkill01',
+    'DollSkill02',
 )
 
 
-class DollSkill(models.Model):
+class DollSkill01(models.Model):
     """
     인형 스킬
     """
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,
-        related_name='doll_skill',
+        related_name='doll_skill_data',
         blank=True,
     )
 
+    level = models.PositiveSmallIntegerField(blank=True, null=True)
+    cooldown = models.PositiveSmallIntegerField(blank=True, null=True)
 
 
+class DollSkill02(models.Model):
+    """
+    인형 스킬
+    """
+    doll = models.ForeignKey(
+        Doll,
+        on_delete=models.CASCADE,
+        related_name='doll_skill_data',
+        blank=True,
+    )
+
+    level = models.PositiveSmallIntegerField(blank=True, null=True)
+    cooldown = models.PositiveSmallIntegerField(blank=True, null=True)
