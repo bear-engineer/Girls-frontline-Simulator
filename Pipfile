@@ -11,6 +11,7 @@ requests = "*"
 lxml = "*"
 djangorestframework = "*"
 django-filter = "*"
+raven = "*"
 
 [dev-packages]
 ipython = "*"

@@ -1,5 +1,6 @@
 import os
 import json
+import raven
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -33,7 +34,15 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
+    'raven.contrib.django.raven_compat',
 ]
+
+RAVEN_CONFIG = {
+    'dsn': secrets['SENTRY_DSN'],
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
