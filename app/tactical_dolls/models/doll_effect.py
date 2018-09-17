@@ -32,7 +32,7 @@ class DollEffectGrid(models.Model):
         related_name='doll_effect_grid',
         blank=True
     )
-    effect_pw = models.PositiveSmallIntegerField()
-    effect_dr = models.PositiveSmallIntegerField()
-    effect_cd = models.PositiveSmallIntegerField()
-    effect_ic = models.PositiveSmallIntegerField()
+    effect_pw = models.PositiveSmallIntegerField(blank=True, null=True)
+    effect_dr = models.PositiveSmallIntegerField(blank=True, null=True)
+    effect_cd = models.PositiveSmallIntegerField(blank=True, null=True)
+    effect_ic = models.PositiveSmallIntegerField(blank=True, null=True)
