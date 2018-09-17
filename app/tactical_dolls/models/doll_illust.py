@@ -17,11 +17,9 @@ class DollSkinImage(models.Model):
         related_name='doll_skins',
         blank=True
     )
-    doll_skin_name = models.CharField(max_length=50, blank=True, verbose_name='스킨 이름')
-    doll_skin_story = models.TextField(max_length=255, blank=True, verbose_name='스킨 스토리')
-    doll_sd_skin = models.ImageField(upload_to='doll_sd_skins', blank=True, verbose_name='스킨 SD 일러스트')
-    doll_default_skin = models.ImageField(upload_to='doll_default_skins', blank=True, verbose_name='스킨 기본 일러스트')
-    doll_damage_skin = models.ImageField(upload_to='doll_damage_skins', blank=True, verbose_name='스킨 파손 일러트스')
+    skin_name = models.CharField(max_length=50, blank=True, verbose_name='스킨 이름')
+    default_skin = models.ImageField(upload_to='doll_default_skins', blank=True, verbose_name='스킨 기본 일러스트')
+    damage_skin = models.ImageField(upload_to='doll_damage_skins', blank=True, verbose_name='스킨 파손 일러트스')
 
 
 class DollSDImage(models.Model):
