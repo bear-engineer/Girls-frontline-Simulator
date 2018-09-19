@@ -105,6 +105,14 @@ class Update(View):
                 defaults=doll_data,
             )
 
+            for skill in source['skill1'].get('dataPool'):
+                doll.doll_skill_data01.update_or_create(level=skill['level'], cooldown=skill['cooldown'])
+
+            try:
+                for skill in source['skill2'].get('dataPool'):
+                    doll.doll_skill_data02.update_or_create(level=skill['level'], cooldown=skill['cooldown'])
+            except KeyError:
+                doll.doll_skill_data02.update_or_create(level=None, cooldown=None)
             # doll.doll_status.update_or_create(
             #     # hp=source['stats']['hp'],
             #     defaults=doll_status_data,

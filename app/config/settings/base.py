@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 ]
 
 # Sentry Setting
+# Error massage by 'dev.younlab@gmail.com'
 RAVEN_CONFIG = {
     'dsn': secrets['SENTRY_DSN'],
     # If you are using git, you can also automatically configure the
