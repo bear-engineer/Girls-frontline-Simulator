@@ -66,40 +66,6 @@ class Update(View):
                 'is_upgrade': is_upgrade,
             }
 
-            # doll_data = {
-            #     'kr_name': source.get('krName'),
-            #     'doll_id': source['id'],
-            #     'build_time': source.get('buildTime'),
-            #     'rank': source['rank'],
-            #     'type': source['type'].upper(),
-            #     'illust': source.get('illust'),
-            #     'voice': source.get('voice'),
-            #     'is_upgrade': is_upgrade,
-            # }
-
-            # doll_status_data = {
-            #     'hp': source['stats']['hp'],
-            #     'dodge': source['stats']['dodge'],
-            #     'pow': source['stats']['pow'],
-            #     'hit': source['stats']['hit'],
-            #     'speed': source['stats']['speed'],
-            #     'rate': source['stats']['rate'],
-            #     'armor_piercing': source['stats'].get('armorPiercing'),
-            #     'crit': source['stats']['criticalPercent'],
-            #     'armor': source['stats'].get('armorPiercing'),
-            #     'range': source['stats'].get('range'),
-            #     'shield': source['stats'].get('shield'),
-            #     'bullet': source['stats'].get('bullet'),
-            #     'critdmg': source['stats'].get('critDmg'),
-            #     'night_view': source['stats'].get('night_view'),
-            #     'cool_down': source['stats'].get('cool_down'),
-            # }
-            # doll_effect_data = {
-            #     'effect_type': source['effect'].get('effectType').upper(),
-            #     'effect_center': source['effect'].get('effectCenter'),
-            #     'effect_pos': source['effect'].get('effectPos'),
-            # }
-
             doll, doll_create = Doll.objects.update_or_create(
                 id=source.get('id'),
                 defaults=doll_data,
@@ -113,19 +79,13 @@ class Update(View):
                     doll.doll_skill_data02.update_or_create(level=skill['level'], cooldown=skill['cooldown'])
             except KeyError:
                 doll.doll_skill_data02.update_or_create(level=None, cooldown=None)
-            # doll.doll_status.update_or_create(
-            #     # hp=source['stats']['hp'],
-            #     defaults=doll_status_data,
-            # )
-            #
-            # doll.doll_effect.update_or_create(
-            #     # effect_center=effect_type,
-            #     defaults=doll_effect_data,
-            # )
 
-            # doll.doll_drop.update_or_create(
-            #     drop_field=source.get('drop'),
-            # )
+            doll.doll_effect.update_or_create(
+                effecttype=source['effect']['effectType'],
+                effectcenter=source['effect']['effectCenter'],
+                effectpos=source['effect']['effectPos'],
+            )
+
             doll.save()
             print(f"{source['codename']} 저장 성공")
 
