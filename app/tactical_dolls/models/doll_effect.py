@@ -37,5 +37,5 @@ class DollEffectGrid(models.Model):
     rate = models.PositiveSmallIntegerField(blank=True, null=True)
     dodge = models.PositiveSmallIntegerField(blank=True, null=True)
     criticalpercent = models.PositiveSmallIntegerField(blank=True, null=True)
-    colldown = models.PositiveSmallIntegerField(blank=True, null=True)
+    cooldown = models.PositiveSmallIntegerField(blank=True, null=True)
     armor = models.PositiveSmallIntegerField(blank=True, null=True)

@@ -85,6 +85,16 @@ class Update(View):
                 effectcenter=source['effect']['effectCenter'],
                 effectpos=source['effect']['effectPos'],
             )
+            grideffect = source['effect']['gridEffect']
+            doll.doll_effect_grid.update_or_create(
+                pow=grideffect.get('pow'),
+                hit=grideffect.get('hit'),
+                rate=grideffect.get('rate'),
+                dodge=grideffect.get('dodge'),
+                criticalpercent=grideffect.get('criticalPercent'),
+                cooldown=grideffect.get('cooldown'),
+                armor=grideffect.get('armor'),
+            )
 
             doll.save()
             print(f"{source['codename']} 저장 성공")
