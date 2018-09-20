@@ -71,6 +71,19 @@ class Update(View):
                 defaults=doll_data,
             )
 
+            doll_status = source['stats']
+            doll.doll_status.update_or_create(
+                hp=doll_status.get('hp'),
+                pow=doll_status.get('pow'),
+                hit=doll_status.get('hit'),
+                dodge=doll_status.get('dodge'),
+                speed=doll_status.get('speed'),
+                rate=doll_status.get('rate'),
+                armorpiercing=doll_status.get('armorPiercing'),
+                criticalpercent=doll_status.get('criticalPercent'),
+                bullet=doll_status.get('bullet'),
+            )
+
             for skill in source['skill1'].get('dataPool'):
                 doll.doll_skill_data01.update_or_create(level=skill['level'], cooldown=skill['cooldown'])
 
