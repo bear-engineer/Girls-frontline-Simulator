@@ -1,6 +1,8 @@
 from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 
+from tactical_dolls.models.update import DollUpdate
+
 __all__ = (
     'Doll',
 )
@@ -55,6 +57,8 @@ class Doll(models.Model):
     mindupdata = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50, blank=True,
                                   null=True)
     is_upgrade = models.BooleanField()
+    objects = models.Manager()
+    doll_update = DollUpdate()
 
     def __str__(self):
         return f'No.{self.id} Type.{self.type} CodeName.{self.codename}'
