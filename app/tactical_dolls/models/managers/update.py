@@ -1,11 +1,14 @@
 import requests
 from django.db.models import Manager
 
+__all__ = (
+    'Update',
+)
 
 
-class DollUpdate(Manager):
+class Update(Manager):
 
-    def dollupdate(self):
+    def update_doll(self):
         from tactical_dolls.models import Doll
 
         # 인형 데이터 Json source

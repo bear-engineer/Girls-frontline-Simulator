@@ -10,5 +10,5 @@ class Update(View):
     """
 
     def get(request, *args, **kwargs):
-        Doll.doll_update.dollupdate()
+        Doll.object.update_doll()
         return HttpResponse('update')

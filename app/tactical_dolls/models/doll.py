@@ -1,7 +1,7 @@
 from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 
-from tactical_dolls.models.update import DollUpdate
+from .managers import Update
 
 __all__ = (
     'Doll',
@@ -58,7 +58,7 @@ class Doll(models.Model):
                                   null=True)
     is_upgrade = models.BooleanField()
     objects = models.Manager()
-    doll_update = DollUpdate()
+    object = Update()
 
     def __str__(self):
         return f'No.{self.id} Type.{self.type} CodeName.{self.codename}'
