@@ -12,7 +12,7 @@ class DollEffectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DollEffect
-        fields = '__all__'
+        exclude = ('doll', 'id')
 
     def get_effectpos(self, obj):
         return eval(obj.effectpos)
