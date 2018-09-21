@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from tactical_dolls.models import Doll
+from tactical_dolls.models import Doll, DollEffect
 
 
 class Update(View):
@@ -22,6 +22,8 @@ class EffectCalculation(View):
 
     def get(request, *args, **kwargs):
         pass
+
+
 
     @csrf_exempt
     def post(request, *args, **kwargs):
