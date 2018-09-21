@@ -8,6 +8,7 @@ __all__ = (
 )
 
 
+
 class Doll(models.Model):
     """
     전술 인형 정보

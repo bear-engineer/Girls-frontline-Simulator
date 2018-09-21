@@ -15,7 +15,6 @@ class DollEffect(models.Model):
         related_name='doll_effect',
         blank=True
     )
-
     effecttype = models.CharField(max_length=100, blank=True, null=True)
     effectcenter = models.PositiveSmallIntegerField(blank=True, null=True)
     effectpos = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50, blank=True,
