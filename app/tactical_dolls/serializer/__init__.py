@@ -21,13 +21,7 @@ class DollSerializer(serializers.ModelSerializer):
             'codename',
             'grow',
             'doll_status',
-            'skill01_id',
-            'skill01_codename',
-            'skill01_cooldowntype',
-            'skill01_initialcooldown',
-            'skill01_consumption',
             'doll_effect',
             'doll_skill_data01',
             'doll_skill_data02',
         )
-
