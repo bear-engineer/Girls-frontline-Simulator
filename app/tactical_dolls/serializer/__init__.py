@@ -21,11 +21,11 @@ class DollSerializer(serializers.ModelSerializer):
             'buildtime',
             'codename',
             'grow',
+            'type',
             'is_upgrade',
             'doll_status',
             'doll_effect',
             'doll_effect_grid',
             'doll_skill_data01',
             'doll_skill_data02',
-
         )
