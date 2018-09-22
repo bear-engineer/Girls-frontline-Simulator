@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
@@ -15,16 +16,5 @@ class Update(View):
         return HttpResponse('update')
 
 
-class EffectCalculation(View):
-    """
-    전술 인형 진영 버프를 계산합니다.
-    """
-
-    def get(request, *args, **kwargs):
-        pass
 
 
-
-    @csrf_exempt
-    def post(request, *args, **kwargs):
-        pass

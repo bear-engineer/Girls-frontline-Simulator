@@ -5,5 +5,5 @@ from .models import Doll
 
 
 class Dolls(ListAPIView):
-    queryset = Doll.objects.filter(type='sg')
+    queryset = Doll.objects.all()
     serializer_class = DollSerializer
