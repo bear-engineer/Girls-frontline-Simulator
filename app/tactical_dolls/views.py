@@ -1,9 +1,8 @@
 from django.http import HttpResponse
-from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 
-from tactical_dolls.models import Doll, DollEffect
+from tactical_dolls.forms import DollForms
+from .models import Doll, DollEffect
 
 
 class Update(View):
@@ -15,6 +14,6 @@ class Update(View):
         Doll.object.update_doll()
         return HttpResponse('update')
 
-
-
-
+    def post(self, *args, **kwargs):
+        forms = DollForms
+        pass

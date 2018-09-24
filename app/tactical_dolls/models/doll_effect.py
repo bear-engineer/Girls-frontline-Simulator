@@ -4,6 +4,7 @@ from .doll import Doll
 
 __all__ = (
     'DollEffect',
+    'DollEffectPos',
     'DollEffectGrid',
 )
 
@@ -15,13 +16,24 @@ class DollEffect(models.Model):
         related_name='doll_effect',
         blank=True
     )
-    effecttype = models.CharField(max_length=100, blank=True, null=True)
-    effectcenter = models.PositiveSmallIntegerField(blank=True, null=True)
-    effectpos = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50, blank=True,
-                                 null=True)
+    type = models.CharField(max_length=100, blank=True, null=True)
+    center = models.PositiveSmallIntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.effectpos
+        return f'{self.type} {self.center}'
+
+
+class DollEffectPos(models.Model):
+    doll = models.ForeignKey(
+        Doll,
+        on_delete=models.CASCADE,
+        related_name='doll_effect_pos',
+        blank=True
+    )
+    pos = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.pos
 
 
 class DollEffectGrid(models.Model):

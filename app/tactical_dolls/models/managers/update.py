@@ -32,7 +32,7 @@ class Update(Manager):
                 skill02_cooldowntype = source['skill2'].get('cooldownType')
                 skill02_initialcooldown = source['skill2'].get('initialCooldown')
                 skill02_consumption = source['skill2']['consumption']
-                skill02_data = source['skill2']['dataPool']
+                skill02_data = list(source['skill2']['dataPool'])
             except KeyError:
                 skill01_consumption = None
                 skill02_id = None
@@ -79,7 +79,7 @@ class Update(Manager):
                 skill_id=source['skill1'].get('id'),
                 codename=source['skill1'].get('codename'),
                 cooldowntype=source['skill1'].get('cooldownType'),
-                skill_data=source['skill1'].get('dataPool'),
+                skill_data=list(source['skill1'].get('dataPool')),
                 initialcooldown=source['skill1'].get('initialCooldown'),
                 consumption=skill01_consumption,
             )
