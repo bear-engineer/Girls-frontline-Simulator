@@ -22,7 +22,6 @@ class DollStatus(models.Model):
     dodge = models.PositiveSmallIntegerField(blank=True, null=True)
     speed = models.PositiveSmallIntegerField(blank=True, null=True)
     rate = models.PositiveSmallIntegerField(blank=True, null=True)
-    armorpiercing = models.PositiveSmallIntegerField(blank=True, null=True)
-    criticalpercent = models.PositiveSmallIntegerField(blank=True, null=True)
+    armor_piercing = models.PositiveSmallIntegerField(blank=True, null=True)
+    critical_percent = models.PositiveSmallIntegerField(blank=True, null=True)
     bullet = models.PositiveSmallIntegerField(blank=True, null=True)
-

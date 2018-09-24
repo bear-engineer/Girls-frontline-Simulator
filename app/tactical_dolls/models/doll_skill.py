@@ -5,6 +5,8 @@ from .doll import Doll
 __all__ = (
     'DollSkill01',
     'DollSkill02',
+    'DollSkillData01',
+    'DollSkillData02',
 )
 
 COOL_DOWN_TYPE = (
