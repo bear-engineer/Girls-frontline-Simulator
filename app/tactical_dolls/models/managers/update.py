@@ -25,6 +25,7 @@ class Update(Manager):
             else:
                 is_upgrade = False
 
+            # 전술 인형 기초정보
             doll_basic_data = {
                 'id': source.get('id'),
                 'rank': source.get('rank'),
@@ -35,11 +36,13 @@ class Update(Manager):
                 'is_upgrade': is_upgrade,
             }
 
+            # 전술 인형 기초 진형버프 정보
             doll_effect = {
                 'type': source['effect'].get('effectType'),
                 'center': source['effect'].get('effectCenter'),
             }
 
+            # 전술 인형 스테이터스
             doll_status = {
                 'hp': source['stats'].get('hp'),
                 'pow': source['stats'].get('pow'),
@@ -52,6 +55,7 @@ class Update(Manager):
                 'bullet': source['stats'].get('bullet'),
             }
 
+            # 전술 인형 기본 스킬 정보
             doll_skill01 = {
                 'skill_id': source['skill1'].get('id'),
                 'codename': source['skill1'].get('codename'),
@@ -60,6 +64,7 @@ class Update(Manager):
                 'consumption': source['skill1'].get('consumption'),
             }
 
+            # 전술 인형 Upgrade 스킬 정보
             try:
                 doll_skill02 = {
                     'skill_id': source['skill2'].get('id'),
@@ -77,6 +82,7 @@ class Update(Manager):
                     'consumption': None,
                 }
 
+            # 업데이트 또는 생성
             doll, doll_create = Doll.objects.update_or_create(
                 id=source.get('id'),
                 defaults=doll_basic_data,
@@ -130,6 +136,32 @@ class Update(Manager):
                 cool_down=effect_grid.get('cooldown'),
                 armor=effect_grid.get('armor'),
             )
+
+            for data in source['equip1']:
+                doll.doll_equip_slot01.update_or_create(
+                    module=data,
+                )
+
+            for data in source['equip2']:
+                doll.doll_equip_slot02.update_or_create(
+                    module=data,
+                )
+
+            for data in source['equip3']:
+                doll.doll_equip_slot03.update_or_create(
+                    module=data,
+                )
+
+            try:
+                mind_update_source = source['mindupdate']
+            except KeyError:
+                mind_update_source = []
+
+            for data in mind_update_source:
+                doll.doll_mind_update.update_or_create(
+                    core=data.get('core'),
+                    mind_piece=data.get('mempiece')
+                )
 
             doll.save()
             print(f"{source['codename']} 저장 성공")
