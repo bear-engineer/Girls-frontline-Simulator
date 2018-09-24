@@ -1,4 +1,3 @@
-from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 from .doll import Doll
 
@@ -47,6 +46,6 @@ class DollEffectGrid(models.Model):
     hit = models.PositiveSmallIntegerField(blank=True, null=True)
     rate = models.PositiveSmallIntegerField(blank=True, null=True)
     dodge = models.PositiveSmallIntegerField(blank=True, null=True)
-    criticalpercent = models.PositiveSmallIntegerField(blank=True, null=True)
-    cooldown = models.PositiveSmallIntegerField(blank=True, null=True)
+    critical_percent = models.PositiveSmallIntegerField(blank=True, null=True)
+    cool_down = models.PositiveSmallIntegerField(blank=True, null=True)
     armor = models.PositiveSmallIntegerField(blank=True, null=True)
