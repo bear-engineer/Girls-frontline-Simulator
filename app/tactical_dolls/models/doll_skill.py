@@ -27,6 +27,7 @@ class DollSkill01(models.Model):
         blank=True,
     )
     skill_id = models.PositiveSmallIntegerField(blank=True, null=True)
+    skill_image = models.ImageField(upload_to='doll_skill_images', blank=True, null=True)
     codename = models.CharField(max_length=50, blank=True, null=True)
     cool_down_type = models.CharField(max_length=4, choices=COOL_DOWN_TYPE, blank=True, null=True)
     initial_cool_down = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -45,6 +46,7 @@ class DollSkill02(models.Model):
     )
 
     skill_id = models.PositiveSmallIntegerField(blank=True, null=True)
+    skill_image = models.ImageField(upload_to='doll_skill_images', blank=True, null=True)
     codename = models.CharField(max_length=50, blank=True, null=True)
     cool_down_type = models.CharField(max_length=4, choices=COOL_DOWN_TYPE, blank=True, null=True)
     initial_cool_down = models.PositiveSmallIntegerField(blank=True, null=True)
