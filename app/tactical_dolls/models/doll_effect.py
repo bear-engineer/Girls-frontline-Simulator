@@ -18,9 +18,6 @@ class DollEffect(models.Model):
     type = models.CharField(max_length=100, blank=True, null=True)
     center = models.PositiveSmallIntegerField(blank=True, null=True)
 
-    def __str__(self):
-        return f'{self.type} {self.center}'
-
 
 class DollEffectPos(models.Model):
     doll = models.ForeignKey(
@@ -30,9 +27,6 @@ class DollEffectPos(models.Model):
         blank=True
     )
     pos = models.PositiveSmallIntegerField(blank=True, null=True)
-
-    def __str__(self):
-        return self.pos
 
 
 class DollEffectGrid(models.Model):
