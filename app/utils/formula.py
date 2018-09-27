@@ -21,7 +21,7 @@ def doll_position(**kwargs):
         center_position = values + doll_effect.center
         for pos in doll_effect_pos:
             pos_values = pos.pos + values
-            if pos_values < 9:
+            if pos.pos + values == 7 or pos.pos + values >= 10 or pos.pos + values == 3:
                 pos_values = 0
             doll_positions['center'] = center_position
             pos_list.append(pos_values)
@@ -49,5 +49,10 @@ def formula(data_list):
         dolls = {}
         dolls['id'] = data['id']
         dolls['position'] = doll_position(**data)
+        dolls['status'] = [{'pow': item.pow, 'armor': item.armor, 'cool_down': item.cool_down,
+                            'critical_percent': item.critical_percent, 'dodge': item.dodge, 'rate': item.rate,
+                            'hit': item.hit}
+                           for item in DollEffectGrid.objects.filter(doll__id=data['id'])]
+
         doll_data.append(dolls)
     return doll_data
