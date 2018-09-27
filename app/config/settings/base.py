@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'members',
     'tactical_dolls',
     'tactical_fairys',
+    'tactical_equips',
 
     # Base Module
     'django.contrib.admin',
