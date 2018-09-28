@@ -1,4 +1,4 @@
-from tactical_dolls.models import DollEffect, DollEffectGrid, DollEffectPos
+from tactical_dolls.models import DollEffect, DollEffectGrid, DollEffectPos, DollStatus
 
 
 def doll_position(**kwargs):
@@ -42,7 +42,28 @@ def doll_position(**kwargs):
         # default center 일 경우
         doll_positions['center'] = center
         doll_positions['pos'] = [item.pos for item in doll_effect_pos]
+        doll_positions['type'] = doll_effect.type
     return doll_positions
+
+
+def doll_status(**kwargs):
+    doll_id = kwargs['id']
+    status_list = [
+        {
+            'hp': item.hp,
+            'pow': item.pow,
+            'hit': item.hit,
+            'dodge': item.dodge,
+            'speed': item.speed,
+            'rate': item.rate,
+            'armor_piercing': item.armor_piercing,
+            'critical_percent': item.critical_percent,
+            'bullet': item.bullet,
+            'armor': item.armor,
+        }
+        for item in DollStatus.objects.filter(doll__id=doll_id)
+    ][0]
+    return status_list
 
 
 def formula(data_list):
@@ -74,7 +95,7 @@ def formula(data_list):
             'dodge': 0,
             'rate': 0,
             'hit': 0,
-            'doll_id': [],
+            'apply_effect_doll_id': [],
         },
         } for i in range(1, 9 + 1)]
 
@@ -98,7 +119,7 @@ def formula(data_list):
             # 값이 0 일경우 무시
             if position_num == 0:
                 continue
-            position_grid_list[position_num - 1][position_num]['doll_id'].append(data['id'])
+            position_grid_list[position_num - 1][position_num]['apply_effect_doll_id'].append(data['id'])
             for index in effect_index:
                 # 값이 없거나 0 일경우 무시
                 if effect_grid[index] is None or 0:

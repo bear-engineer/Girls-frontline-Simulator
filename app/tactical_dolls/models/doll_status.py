@@ -25,3 +25,4 @@ class DollStatus(models.Model):
     armor_piercing = models.PositiveSmallIntegerField(blank=True, null=True)
     critical_percent = models.PositiveSmallIntegerField(blank=True, null=True)
     bullet = models.PositiveSmallIntegerField(blank=True, null=True)
+    armor = models.PositiveSmallIntegerField(blank=True, null=True)

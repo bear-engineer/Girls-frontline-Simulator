@@ -53,6 +53,7 @@ class Update(Manager):
                 'armor_piercing': source['stats'].get('armorPiercing'),
                 'critical_percent': source['stats'].get('criticalPercent'),
                 'bullet': source['stats'].get('bullet'),
+                'armor': source['stats'].get('armor'),
             }
 
             # 전술 인형 기본 스킬 정보
