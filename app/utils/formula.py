@@ -3,7 +3,9 @@ from tactical_dolls.models import DollEffect, DollEffectGrid, DollEffectPos
 
 def doll_position(**kwargs):
     """
-    re position
+    전술 인형 중심 위치에따라 자동으로 이펙트 데이터 적용 위치 환산
+    들어오는 값
+    {'id':id_Number, 'center':center_Number,}
     :param kwargs:
     :return:
     """
@@ -47,6 +49,17 @@ def formula(data_list):
     """
     전술 인형 위치값을 포함한 계산식
     그리드 이펙트 추가
+    들어오는 값
+    [
+        {
+            'id':id_Number,
+            'center':center_Number,
+        },
+        {
+            'id':id_Number,
+            'center':center_Number,
+        },
+    ]
     :param data_list:
     :return:
     """
@@ -82,11 +95,13 @@ def formula(data_list):
         ][0]
 
         for position_num in doll_position(**data)['pos']:
+            # 값이 0 일경우 무시
             if position_num == 0:
                 continue
             position_grid_list[position_num - 1][position_num]['doll_id'].append(data['id'])
             for index in effect_index:
-                if effect_grid[index] is None:
+                # 값이 없거나 0 일경우 무시
+                if effect_grid[index] is None or 0:
                     continue
                 position_grid_list[position_num - 1][position_num][index] += effect_grid[index]
 
