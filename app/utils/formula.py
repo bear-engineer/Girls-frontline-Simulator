@@ -7,10 +7,10 @@ def doll_position(**kwargs):
     :param kwargs:
     :return:
     """
-    id = kwargs.get('id')
+    doll_id = kwargs.get('id')
     center = kwargs.get('center')
-    doll_effect = [item for item in DollEffect.objects.filter(doll__id=id)][0]
-    doll_effect_pos = [item for item in DollEffectPos.objects.filter(doll__id=id)]
+    doll_effect = [item for item in DollEffect.objects.filter(doll__id=doll_id)][0]
+    doll_effect_pos = [item for item in DollEffectPos.objects.filter(doll__id=doll_id)]
     doll_positions = {
     }
 
@@ -44,15 +44,50 @@ def doll_position(**kwargs):
 
 
 def formula(data_list):
-    doll_data = []
-    for data in data_list:
-        dolls = {}
-        dolls['id'] = data['id']
-        dolls['position'] = doll_position(**data)
-        dolls['status'] = [{'pow': item.pow, 'armor': item.armor, 'cool_down': item.cool_down,
-                            'critical_percent': item.critical_percent, 'dodge': item.dodge, 'rate': item.rate,
-                            'hit': item.hit}
-                           for item in DollEffectGrid.objects.filter(doll__id=data['id'])]
+    """
+    전술 인형 위치값을 포함한 계산식
+    그리드 이펙트 추가
+    :param data_list:
+    :return:
+    """
 
-        doll_data.append(dolls)
-    return doll_data
+    # 9번까지 그리드 이펙트 저장소 자동 생성
+    position_grid_list = [
+        {i: {
+            'pow': 0,
+            'armor': 0,
+            'cool_down': 0,
+            'critical_percent': 0,
+            'dodge': 0,
+            'rate': 0,
+            'hit': 0,
+            'doll_id': [],
+        },
+        } for i in range(1, 9 + 1)]
+
+    # 해당하는 위치값에 전술인형 넘버를 넣고 이펙트 데이터 합산
+    for data in data_list:
+        effect_index = 'pow,armor,cool_down,critical_percent,dodge,rate,hit'.split(',')
+        effect_grid = [
+            {
+                'pow': item.pow,
+                'armor': item.armor,
+                'cool_down': item.cool_down,
+                'critical_percent': item.critical_percent,
+                'dodge': item.dodge,
+                'rate': item.rate,
+                'hit': item.hit,
+            }
+            for item in DollEffectGrid.objects.filter(doll__id=data['id'])
+        ][0]
+
+        for position_num in doll_position(**data)['pos']:
+            if position_num == 0:
+                continue
+            position_grid_list[position_num - 1][position_num]['doll_id'].append(data['id'])
+            for index in effect_index:
+                if effect_grid[index] is None:
+                    continue
+                position_grid_list[position_num - 1][position_num][index] += effect_grid[index]
+
+    return position_grid_list

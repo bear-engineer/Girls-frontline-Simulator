@@ -43,4 +43,3 @@ class DollEffectGrid(models.Model):
     critical_percent = models.PositiveSmallIntegerField(blank=True, null=True)
     cool_down = models.PositiveSmallIntegerField(blank=True, null=True)
     armor = models.PositiveSmallIntegerField(blank=True, null=True)
-
