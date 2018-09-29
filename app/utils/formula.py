@@ -8,6 +8,9 @@ class Formula:
         self.effect = [item for item in DollEffect.objects.filter(doll__id=self.id)][0]
         self.effect_pos = [item for item in DollEffectPos.objects.filter(doll__id=self.id)]
 
+    def position(self):
+        pass
+
 
 def doll_position(**kwargs):
     """
