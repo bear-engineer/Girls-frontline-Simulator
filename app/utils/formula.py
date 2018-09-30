@@ -11,6 +11,8 @@ class Formula:
     def position(self):
         pass
 
+    def status(self):
+        pass
 
 def doll_position(**kwargs):
     """
