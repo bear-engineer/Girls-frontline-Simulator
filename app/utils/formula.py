@@ -7,12 +7,50 @@ class Formula:
         self.center = kwargs.get('center')
         self.effect = [item for item in DollEffect.objects.filter(doll__id=self.id)][0]
         self.effect_pos = [item for item in DollEffectPos.objects.filter(doll__id=self.id)]
+        self.positions = {}
 
+    @property
     def position(self):
-        pass
+        # 포지션 위치값
+        pos_list = []
+        if self.center > self.effect.center:
+            values = self.center - self.effect.center
+            center_position = values + self.effect.center
+            for pos in self.effect_pos:
+                pos_values = pos.pos + values
+                if pos.pos + values == 7 or pos.pos + values >= 10 or pos.pos + values == 3:
+                    pos_values = 0
+                self.positions['center'] = center_position
+
+                # 값이 0 일 경우 추가하지 않는다.
+                if pos_values == 0:
+                    continue
+                pos_list.append(pos_values)
+            self.positions['pos'] = pos_list
+        elif self.center < self.effect.center:
+            values = self.effect.center - self.center
+            center_position = self.effect.center - values
+            for pos in self.effect_pos:
+                pos_values = pos.pos - values
+                if pos_values < 0:
+                    pos_values = 0
+                self.positions['center'] = center_position
+
+                # 값이 0 일 경우 추가하지 않는다.
+                if pos_values == 0:
+                    continue
+                pos_list.append(pos_values)
+            self.positions['pos'] = pos_list
+        else:
+            # default center 일 경우
+            self.positions['center'] = self.center
+            self.positions['pos'] = [item.pos for item in self.effect_pos]
+            self.positions['type'] = self.effect.type
+        return self.positions
 
     def status(self):
         pass
+
 
 def doll_position(**kwargs):
     """
