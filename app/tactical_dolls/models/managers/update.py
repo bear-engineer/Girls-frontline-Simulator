@@ -42,6 +42,14 @@ class Update(Manager):
                 'center': source['effect'].get('effectCenter'),
             }
 
+            doll_status_bullet = source['stats'].get('bullet')
+            if doll_status_bullet is None:
+                doll_status_bullet = 0
+
+            doll_status_armor = source['stats'].get('armor')
+            if doll_status_armor is None:
+                doll_status_armor = 0
+
             # 전술 인형 스테이터스
             doll_status = {
                 'hp': source['stats'].get('hp'),
@@ -52,8 +60,8 @@ class Update(Manager):
                 'rate': source['stats'].get('rate'),
                 'armor_piercing': source['stats'].get('armorPiercing'),
                 'critical_percent': source['stats'].get('criticalPercent'),
-                'bullet': source['stats'].get('bullet'),
-                'armor': source['stats'].get('armor'),
+                'bullet': doll_status_bullet,
+                'armor': doll_status_armor,
             }
 
             # 전술 인형 기본 스킬 정보

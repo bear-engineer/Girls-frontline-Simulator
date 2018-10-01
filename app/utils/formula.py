@@ -12,6 +12,7 @@ class GetDoll:
         self.effect_index = 'pow,armor,cool_down,critical_percent,dodge,rate,hit'.split(',')
         self.effect = [item for item in DollEffect.objects.filter(doll__id=self.id)][0]
         self.effect_pos = [item for item in DollEffectPos.objects.filter(doll__id=self.id)]
+        self.doll_status = [item for item in DollStatus.objects.filter(doll__id=self.id)][0]
         self.effect_grid = [
             {
                 'pow': item.pow,
@@ -89,7 +90,7 @@ class Formula:
     def __init__(self, data):
         self.data_list = data
         self.effect_index = 'pow,armor,cool_down,critical_percent,dodge,rate,hit'.split(',')
-
+        self.type_list = 'all,ar,rf,hg,mg,smg,sg'.split(',')
         self.position_grid_list = [
             {i: {
                 'effect': {
@@ -162,13 +163,33 @@ class Formula:
             } for i in range(1, 9 + 1)]
 
     def effect_formula(self):
-        type_list = 'all,ar,rf,hg,mg,smg,sg'.split(',')
         for data in self.data_list:
             dept = GetDoll(**data).position
             for i in dept.get('pos'):
                 self.position_grid_list[i - 1][i]['apply_effect_doll_id'].append(data['id'])
-                for index in type_list:
+                for index in self.type_list:
                     if dept.get('type') == index:
                         for grid in self.effect_index:
                             self.position_grid_list[i - 1][i]['effect'][index][grid] += dept.get('effect')[grid]
         return self.position_grid_list
+
+    def status_formula(self):
+
+        result = []
+        for data in self.data_list:
+            status_dict = {}
+            # positions = GetDoll(**data).position
+            doll = GetDoll(**data)
+            value = self.effect_formula()[doll.position['center'] - 1][doll.position['center']]['effect'][
+                doll.position['type']]
+            for index in self.effect_index:
+                try:
+                    status_key = doll.status_list[index]
+                    if status_key > 0:
+                        status_dict[index] = 1 + (value[index] * 0.01) * status_key + status_key
+                except KeyError:
+                    status_dict[index] = 0
+
+            result.append(status_dict)
+        return result
+        # 1 + 15 * 0.01
