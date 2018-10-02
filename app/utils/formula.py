@@ -93,71 +93,7 @@ class Formula:
         self.type_list = 'all,ar,rf,hg,mg,smg,sg'.split(',')
         self.position_grid_list = [
             {i: {
-                'effect': {
-                    'all': {
-                        'pow': 0,
-                        'armor': 0,
-                        'cool_down': 0,
-                        'critical_percent': 0,
-                        'dodge': 0,
-                        'rate': 0,
-                        'hit': 0,
-                    },
-                    'ar': {
-                        'pow': 0,
-                        'armor': 0,
-                        'cool_down': 0,
-                        'critical_percent': 0,
-                        'dodge': 0,
-                        'rate': 0,
-                        'hit': 0,
-                    },
-                    'rf': {
-                        'pow': 0,
-                        'armor': 0,
-                        'cool_down': 0,
-                        'critical_percent': 0,
-                        'dodge': 0,
-                        'rate': 0,
-                        'hit': 0,
-                    },
-                    'hg': {
-                        'pow': 0,
-                        'armor': 0,
-                        'cool_down': 0,
-                        'critical_percent': 0,
-                        'dodge': 0,
-                        'rate': 0,
-                        'hit': 0,
-                    },
-                    'mg': {
-                        'pow': 0,
-                        'armor': 0,
-                        'cool_down': 0,
-                        'critical_percent': 0,
-                        'dodge': 0,
-                        'rate': 0,
-                        'hit': 0,
-                    },
-                    'smg': {
-                        'pow': 0,
-                        'armor': 0,
-                        'cool_down': 0,
-                        'critical_percent': 0,
-                        'dodge': 0,
-                        'rate': 0,
-                        'hit': 0,
-                    },
-                    'sg': {
-                        'pow': 0,
-                        'armor': 0,
-                        'cool_down': 0,
-                        'critical_percent': 0,
-                        'dodge': 0,
-                        'rate': 0,
-                        'hit': 0,
-                    },
-                },
+                'effect': {},
                 'apply_effect_doll_id': [],
             },
             } for i in range(1, 9 + 1)]
@@ -170,18 +106,32 @@ class Formula:
                 for index in self.type_list:
                     if dept.get('type') == index:
                         for grid in self.effect_index:
-                            self.position_grid_list[i - 1][i]['effect'][index][grid] += dept.get('effect')[grid]
+                            try:
+                                self.position_grid_list[i - 1][i]['effect'][index][grid] += dept.get('effect')[grid]
+                            except KeyError:
+                                self.position_grid_list[i - 1][i]['effect'][index] = {
+                                    'pow': dept.get('effect')['pow'],
+                                    'armor': dept.get('effect')['armor'],
+                                    'cool_down': dept.get('effect')['cool_down'],
+                                    'critical_percent': dept.get('effect')['critical_percent'],
+                                    'dodge': dept.get('effect')['dodge'],
+                                    'rate': dept.get('effect')['rate'],
+                                    'hit': dept.get('effect')['hit'],
+                                }
+
         return self.position_grid_list
 
     def status_formula(self):
-
         result = []
         for data in self.data_list:
             status_dict = {}
-            # positions = GetDoll(**data).position
             doll = GetDoll(**data)
-            value = self.effect_formula()[doll.position['center'] - 1][doll.position['center']]['effect'][
-                doll.position['type']]
+            try:
+                value = self.effect_formula()[doll.position['center'] - 1][doll.position['center']]['effect'][
+                    doll.position['type']]
+            except KeyError:
+                continue
+
             for index in self.effect_index:
                 try:
                     status_key = doll.status_list[index]
