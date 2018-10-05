@@ -2,8 +2,20 @@ from django.db import models
 from .doll import Doll
 
 __all__ = (
+    'DollImage',
     'DollSkinImage',
 )
+
+
+class DollImage(models.Model):
+    doll = models.ForeignKey(
+        Doll,
+        on_delete=models.CASCADE,
+        related_name='doll_image',
+
+    )
+    default_skin = models.ImageField(upload_to='doll_default_skins', blank=True, verbose_name='기본 일러스트')
+    damage_skin = models.ImageField(upload_to='doll_damage_skins', blank=True, verbose_name='파손 일러트스')
 
 
 class DollSkinImage(models.Model):
