@@ -2,6 +2,10 @@ from django.db import models
 
 from . import Doll
 
+__all__ = (
+    'DollDetail'
+)
+
 
 class DollDetail(models.Model):
     """

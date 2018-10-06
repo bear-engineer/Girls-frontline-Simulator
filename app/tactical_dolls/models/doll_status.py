@@ -10,7 +10,7 @@ __all__ = (
 class DollStatus(models.Model):
     """
     인형 능력치
-    Default Status Lv 100, Fav 100
+    Default Status Lv 100, Fav 100, Dummy 5Link
     """
     doll = models.ForeignKey(
         Doll,
