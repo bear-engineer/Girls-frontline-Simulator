@@ -11,6 +11,7 @@ class DollStatus(models.Model):
     """
     인형 능력치
     Default Status Lv 100, Fav 100, Dummy 5Link
+    site data, json data 분리
     """
     doll = models.ForeignKey(
         Doll,
