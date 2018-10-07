@@ -1,7 +1,12 @@
+import os
+
 import requests
 from selenium import webdriver
 from bs4 import BeautifulSoup
+import django
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
+django.setup()
 driver = webdriver.Chrome('utils/webdriver/chromedriver')
 
 
@@ -10,12 +15,13 @@ class Crawling:
         self.source_url = source_url
         self.doll_id_list = []
 
+    @property
     def doll_list_add(self):
         """
         doll id 값 파싱
         :return:
         """
-        driver.get(f'{self.source_url}/doll')
+        driver.get(self.source_url + '/doll')
         html = driver.page_source
         soup = BeautifulSoup(html, 'lxml')
         doll_id = soup.select('div > a')
@@ -29,7 +35,7 @@ class Crawling:
         36base, data json 동시 순회 및 DB create or update
         :return:
         """
-        site_source = self.doll_list_add()
+        site_source = self.doll_list_add
         data_source = requests.get(
             'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
         ).json()
@@ -45,10 +51,16 @@ class Crawling:
             else:
                 is_upgrade = False
 
+            # 이벤트 전술인형 rank 예외처리
+            if d_source.get('rank') == 7:
+                rank = 'extra'
+            else:
+                rank = d_source.get('rank')
+
             # 전술 인형 기초정보
             doll_data = {
                 'id': d_source.get('id'),
-                'rank': d_source.get('rank'),
+                'rank': rank,
                 'type': d_source.get('type'),
                 'build_time': d_source.get('buildTime'),
                 'codename': d_source.get('codename'),
