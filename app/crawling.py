@@ -5,12 +5,16 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import django
 
+# 장고 모듈 import
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
 django.setup()
 driver = webdriver.Chrome('utils/webdriver/chromedriver')
 
 
 class Crawling:
+    """
+    36base 데이터 크롤링
+    """
     def __init__(self, source_url='http://localhost:3000'):
         self.source_url = source_url
         self.doll_id_list = []
@@ -53,7 +57,7 @@ class Crawling:
 
             # 이벤트 전술인형 rank 예외처리
             if d_source.get('rank') == 7:
-                rank = 'extra'
+                rank = 'extra'.upper()
             else:
                 rank = d_source.get('rank')
 
@@ -61,7 +65,7 @@ class Crawling:
             doll_data = {
                 'id': d_source.get('id'),
                 'rank': rank,
-                'type': d_source.get('type'),
+                'type': d_source.get('type').upper(),
                 'build_time': d_source.get('buildTime'),
                 'codename': d_source.get('codename'),
                 'grow': d_source.get('grow'),

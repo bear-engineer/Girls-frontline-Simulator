@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from .models import (
     Doll,
-    DollSkinImage,
+    # DollSkinImage,
     DollEffect,
     DollEffectGrid,
     DollSkill01,
@@ -11,7 +11,7 @@ from .models import (
 )
 
 admin.site.register(Doll)
-admin.site.register(DollSkinImage)
+# admin.site.register(DollSkinImage)
 admin.site.register(DollEffect)
 admin.site.register(DollEffectGrid)
 admin.site.register(DollSkill01)
