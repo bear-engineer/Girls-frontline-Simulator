@@ -7,10 +7,12 @@ from bs4 import BeautifulSoup
 import django
 
 # 장고 모듈 import
+
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
 django.setup()
-driver = webdriver.Chrome('utils/webdriver/chromedriver')
 from tactical_dolls.models import Doll
+from tactical_equips.models import DollEquip
 
 
 class Crawling:
@@ -21,7 +23,10 @@ class Crawling:
     def __init__(self, source_url='http://localhost:3000'):
         self.source_url = source_url
         self.doll_id_list = []
-        self.github_image_base_url = 'https://github.com/36base/girlsfrontline-resources/blob/master/pic/pic_'
+        self.equip_id_list = []
+        self.github_image_base_doll_url = 'https://github.com/36base/girlsfrontline-resources/blob/master/pic/pic_'
+        self.github_image_base_equip_url = 'https://github.com/36base/girlsfrontline-resources/blob/master/icon/equip/'
+        self.driver = webdriver.Chrome('utils/webdriver/chromedriver')
 
     @property
     def doll_list_add(self):
@@ -29,14 +34,28 @@ class Crawling:
         doll id 값 파싱
         :return:
         """
-        driver.get(self.source_url + '/doll')
-        html = driver.page_source
+        self.driver.get(self.source_url + '/doll')
+        html = self.driver.page_source
         soup = BeautifulSoup(html, 'lxml')
         doll_id = soup.select('div > a')
 
         for item in doll_id:
             self.doll_id_list.append(item.get('href'))
+        self.driver.close()
         return self.doll_id_list
+
+    @property
+    def equip_list_add(self):
+        """
+        equip id 값 파싱
+        :return:
+        """
+        source = requests.get(
+            'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/equip.json').json()
+        for item in source:
+            self.equip_id_list.append(f'/equip/{item.get("id")}')
+        # self.driver.close()
+        return self.equip_id_list
 
     def create_doll(self):
         """
@@ -49,8 +68,8 @@ class Crawling:
         ).json()
 
         for s_source, d_source in zip(site_source, data_source):
-            driver.get(self.source_url + s_source)
-            html = driver.page_source
+            self.driver.get(self.source_url + s_source)
+            html = self.driver.page_source
             soup = BeautifulSoup(html, 'lxml')
             source_root = soup.select_one('main#content')
 
@@ -141,8 +160,8 @@ class Crawling:
                 codename=d_source.get('codename'),
                 defaults=doll_data
             )
-            doll_image = f'{self.github_image_base_url}{d_source.get("codename")}.png?raw=true'
-            doll_image_d = f'{self.github_image_base_url}{d_source.get("codename")}_D.png?raw=true'
+            doll_image = f'{self.github_image_base_doll_url}{d_source.get("codename")}.png?raw=true'
+            doll_image_d = f'{self.github_image_base_doll_url}{d_source.get("codename")}_D.png?raw=true'
             doll.image.save(
                 f'{d_source.get("codename")}.png', ContentFile(requests.get(doll_image).content)
             )
@@ -227,12 +246,134 @@ class Crawling:
                     core=data.get('core'),
                     mind_piece=data.get('mempiece')
                 )
+
+            doll.save()
             if doll_create is True:
                 print(f'{d_source.get("codename")} 생성 완료')
             else:
                 print(f'{d_source.get("codename")} 업데이트 완료')
-            doll.save()
+        self.driver.close()
+
+    def create_equip(self):
+        site_source = self.equip_list_add
+        data_source = requests.get(
+            'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/equip.json').json()
+        for s_source, d_source in zip(site_source, data_source):
+            self.driver.get(self.source_url + s_source)
+            html = self.driver.page_source
+            soup = BeautifulSoup(html, 'lxml')
+
+            if d_source.get('fitGuns'):
+                is_private = True
+            else:
+                is_private = False
+
+            equip_data = {
+                'id': d_source.get('id'),
+                'codename': d_source.get('codename'),
+                'kr_name': soup.select_one('div > div > img + h2').get_text(strip=True),
+                'rank': d_source.get('rank'),
+                'category': d_source.get('category'),
+                'type': d_source.get('type'),
+                'company': d_source.get('company'),
+                'exclusiveRate': d_source.get('exclusiveRate'),
+                'maxLevel': d_source.get('maxLevel'),
+                'build_time': d_source.get('buildTime'),
+                'is_private': is_private,
+            }
+
+            try:
+                status_pow = d_source['stats']['pow']['max']
+            except KeyError:
+                status_pow = 0
+            try:
+                status_hit = d_source['stats']['hit']['max']
+            except KeyError:
+                status_hit = 0
+            try:
+                status_rate = d_source['stats']['rate']['max']
+            except KeyError:
+                status_rate = 0
+            try:
+                status_dodge = d_source['stats']['dodge']['max']
+            except KeyError:
+                status_dodge = 0
+            try:
+                status_armor = d_source['stats']['armor']['max']
+            except KeyError:
+                status_armor = 0
+            try:
+                status_bullet = d_source['stats']['bullet']['max']
+            except KeyError:
+                status_bullet = 0
+            try:
+                status_cp = d_source['stats']['criticalPercent']['max']
+            except KeyError:
+                status_cp = 0
+            try:
+                status_ch = d_source['stats']['criticalHarmRate']['max']
+            except KeyError:
+                status_ch = 0
+            try:
+                status_speed = d_source['stats']['speed']['max']
+            except KeyError:
+                status_speed = 0
+            try:
+                status_nv = d_source['stats']['nightview']['max']
+            except KeyError:
+                status_nv = 0
+            try:
+                status_ap = d_source['stats']['armorPiercing']['max']
+            except KeyError:
+                status_ap = 0
+
+            equip_status_data = {
+                'pow': status_pow,
+                'hit': status_hit,
+                'rate': status_rate,
+                'dodge': status_dodge,
+                'armor': status_armor,
+                'bullet': status_bullet,
+                'critical_percent': status_cp,
+                'critical_harm_rate': status_cp,
+                'speed': status_speed,
+                'night_view': status_nv,
+                'armor_piercing': status_ap,
+            }
+
+            equip, equip_create = DollEquip.objects.update_or_create(
+                id=d_source.get('id'),
+                defaults=equip_data,
+            )
+
+            equip.equip_image.save(
+                f'{equip_data["codename"]}.png',
+                ContentFile(
+                    requests.get(f'{self.github_image_base_equip_url}{equip_data["codename"]}.png?raw=true').content)
+            )
+
+            equip.doll_equip_status.update_or_create(
+                defaults=equip_status_data,
+            )
+
+            try:
+                fitgun = d_source['fitGuns']
+            except KeyError:
+                fitgun = []
+
+            for item in fitgun:
+                equip.doll_equip_fit.update_or_create(
+                    fit_doll_id=item
+                )
+
+            equip.save()
+            if equip_create is True:
+                print(f'{d_source.get("codename")} 생성 완료')
+            else:
+                print(f'{d_source.get("codename")} 업데이트 완료')
+        self.driver.close()
 
 
 if __name__ == '__main__':
-    Crawling().create_doll()
+    # Crawling().create_doll()
+    Crawling().create_equip()
