@@ -1,4 +1,3 @@
-from django.core.validators import validate_comma_separated_integer_list
 from django.db import models
 
 from .managers import Update
@@ -37,7 +36,8 @@ class Doll(models.Model):
     type = models.CharField(max_length=3, choices=TYPE_CHOICE, verbose_name='전술 인형 타입')
     build_time = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='전술 인형 제조 시간')
     grow = models.PositiveSmallIntegerField(blank=True, null=True)
-    obtain = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50, blank=True, null=True)
+    image = models.ImageField(upload_to='doll_image', blank=True, null=True)
+    image_d = models.ImageField(upload_to='doll_image', blank=True, null=True)
     is_upgrade = models.BooleanField()
 
     objects = models.Manager()

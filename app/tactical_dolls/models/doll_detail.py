@@ -1,6 +1,6 @@
 from django.db import models
 
-from . import Doll
+from .doll import Doll
 
 __all__ = (
     'DollDetail'
