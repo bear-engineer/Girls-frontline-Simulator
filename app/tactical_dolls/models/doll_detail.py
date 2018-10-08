@@ -1,9 +1,8 @@
 from django.db import models
-
 from .doll import Doll
 
 __all__ = (
-    'DollDetail'
+    'DollDetail',
 )
 
 

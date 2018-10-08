@@ -7,11 +7,10 @@ from bs4 import BeautifulSoup
 import django
 
 # 장고 모듈 import
-from tactical_dolls.models import Doll
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
 django.setup()
 driver = webdriver.Chrome('utils/webdriver/chromedriver')
+from tactical_dolls.models import Doll
 
 
 class Crawling:
@@ -139,15 +138,21 @@ class Crawling:
 
             # base doll create
             doll, doll_create = Doll.objects.update_or_create(
+                codename=d_source.get('codename'),
                 defaults=doll_data
             )
             doll_image = f'{self.github_image_base_url}{d_source.get("codename")}.png?raw=true'
             doll_image_d = f'{self.github_image_base_url}{d_source.get("codename")}_D.png?raw=true'
             doll.image.save(
-                doll_image, ContentFile(requests.get(doll_image).content)
+                f'{d_source.get("codename")}.png', ContentFile(requests.get(doll_image).content)
             )
             doll.image_d.save(
-                doll_image_d, ContentFile(requests.get(doll_image_d).content)
+                f'{d_source.get("codename")}_D.png', ContentFile(requests.get(doll_image_d).content)
+            )
+
+            doll.doll_detail.update_or_create(
+                drop=context_list[29],
+                context=context_list[31],
             )
 
             # doll status
@@ -162,7 +167,7 @@ class Crawling:
             for data in d_source['skill1'].get('dataPool'):
                 doll.doll_skill01_data.update_or_create(
                     level=data.get('level'),
-                    cool_down=data.get('colldown'),
+                    cool_down=data.get('cooldown'),
                 )
             doll.doll_skill02.update_or_create(
                 defaults=doll_skill02
