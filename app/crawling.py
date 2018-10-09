@@ -1,5 +1,5 @@
 import os
-
+from multiprocessing import Pool
 import requests
 from django.core.files.base import ContentFile
 from selenium import webdriver
@@ -41,7 +41,7 @@ class Crawling:
 
         for item in doll_id:
             self.doll_id_list.append(item.get('href'))
-        self.driver.close()
+        # self.driver.close()
         return self.doll_id_list
 
     @property
@@ -66,8 +66,10 @@ class Crawling:
         data_source = requests.get(
             'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
         ).json()
+        context_source = requests.get(
+            'https://raw.githubusercontent.com/36base/girlsfrontline-extra-data/master/data/ko/characterScript.json').json()
 
-        for s_source, d_source in zip(site_source, data_source):
+        for s_source, d_source, c_source in zip(site_source, data_source, context_source.values()):
             self.driver.get(self.source_url + s_source)
             html = self.driver.page_source
             soup = BeautifulSoup(html, 'lxml')
@@ -97,6 +99,16 @@ class Crawling:
                 'kr_name': soup.select_one('div > div > h1').get_text(strip=True),
                 'grow': d_source.get('grow'),
                 'is_upgrade': is_upgrade,
+            }
+
+            doll_context = {
+                'drop': None,
+                'dialogue1': c_source['default']['DIALOGUE1'],
+                'dialogue2': c_source['default']['DIALOGUE2'],
+                'dialogue3': c_source['default']['DIALOGUE3'],
+                'soul_contract': c_source['default']['SOULCONTRACT'],
+                'introduce': c_source['default']['Introduce'],
+                'gain': c_source['default'].get('GAIN'),
             }
 
             # 전술 인형 기초 진형버프 정보
@@ -170,8 +182,8 @@ class Crawling:
             )
 
             doll.doll_detail.update_or_create(
-                drop=context_list[29],
-                context=context_list[31],
+                gain=c_source['default'].get('GAIN'),
+                defaults=doll_context,
             )
 
             # doll status
@@ -375,5 +387,5 @@ class Crawling:
 
 
 if __name__ == '__main__':
-    # Crawling().create_doll()
-    Crawling().create_equip()
+    pool = Pool(4)
+    pool.map(Crawling().create_doll(), Crawling().create_equip())

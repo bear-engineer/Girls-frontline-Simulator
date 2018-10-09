@@ -1,9 +1,15 @@
-from rest_framework.generics import ListAPIView
+from rest_framework import generics
 
-from .serializer import DollSerializer
+from .serializer import DollSerializer, DollDetailSerializer
 from .models import Doll
 
 
-class Dolls(ListAPIView):
+class Dolls(generics.ListAPIView):
     queryset = Doll.objects.all()
     serializer_class = DollSerializer
+
+
+class DollDetail(generics.RetrieveAPIView):
+    queryset = Doll.objects.all()
+    serializer_class = DollDetailSerializer
+

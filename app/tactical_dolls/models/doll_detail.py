@@ -8,12 +8,17 @@ __all__ = (
 
 class DollDetail(models.Model):
     """
-    전술인형 상세정보
+    전술인형 context
     """
     doll = models.ForeignKey(
         Doll,
         on_delete=models.CASCADE,
         related_name='doll_detail'
     )
-    drop = models.TextField(max_length=255, blank=True, null=True)
-    context = models.TextField(max_length=255, blank=True, null=True)
+    drop = models.TextField(blank=True, null=True)
+    introduce = models.TextField(blank=True, null=True)
+    dialogue1 = models.CharField(max_length=200, blank=True, null=True)
+    dialogue2 = models.CharField(max_length=200, blank=True, null=True)
+    dialogue3 = models.CharField(max_length=200, blank=True, null=True)
+    soul_contract = models.TextField(blank=True, null=True)
+    gain = models.CharField(max_length=200, blank=True, null=True)

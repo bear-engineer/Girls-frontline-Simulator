@@ -13,7 +13,6 @@ class DollEffect(models.Model):
         Doll,
         on_delete=models.CASCADE,
         related_name='doll_effect',
-        blank=True
     )
     type = models.CharField(max_length=100, blank=True, null=True)
     center = models.PositiveSmallIntegerField(blank=True, null=True)
