@@ -11,7 +11,7 @@ import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.local')
 django.setup()
-from tactical_dolls.models import Doll
+from tactical_dolls.models import Doll, DollDetail
 from tactical_equips.models import DollEquip
 
 
@@ -66,10 +66,8 @@ class Crawling:
         data_source = requests.get(
             'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
         ).json()
-        context_source = requests.get(
-            'https://raw.githubusercontent.com/36base/girlsfrontline-extra-data/master/data/ko/characterScript.json').json()
 
-        for s_source, d_source, c_source in zip(site_source, data_source, context_source.values()):
+        for s_source, d_source in zip(site_source, data_source):
             self.driver.get(self.source_url + s_source)
             html = self.driver.page_source
             soup = BeautifulSoup(html, 'lxml')
@@ -99,16 +97,6 @@ class Crawling:
                 'kr_name': soup.select_one('div > div > h1').get_text(strip=True),
                 'grow': d_source.get('grow'),
                 'is_upgrade': is_upgrade,
-            }
-
-            doll_context = {
-                'drop': None,
-                'dialogue1': c_source['default']['DIALOGUE1'],
-                'dialogue2': c_source['default']['DIALOGUE2'],
-                'dialogue3': c_source['default']['DIALOGUE3'],
-                'soul_contract': c_source['default']['SOULCONTRACT'],
-                'introduce': c_source['default']['Introduce'],
-                'gain': c_source['default'].get('GAIN'),
             }
 
             # 전술 인형 기초 진형버프 정보
@@ -179,11 +167,6 @@ class Crawling:
             )
             doll.image_d.save(
                 f'{d_source.get("codename")}_D.png', ContentFile(requests.get(doll_image_d).content)
-            )
-
-            doll.doll_detail.update_or_create(
-                gain=c_source['default'].get('GAIN'),
-                defaults=doll_context,
             )
 
             # doll status
@@ -347,7 +330,7 @@ class Crawling:
                 'armor': status_armor,
                 'bullet': status_bullet,
                 'critical_percent': status_cp,
-                'critical_harm_rate': status_cp,
+                'critical_harm_rate': status_ch,
                 'speed': status_speed,
                 'night_view': status_nv,
                 'armor_piercing': status_ap,
@@ -385,7 +368,29 @@ class Crawling:
                 print(f'{d_source.get("codename")} 업데이트 완료')
         self.driver.close()
 
+    def create_doll_detail(self):
+        context_source = requests.get(
+            'https://raw.githubusercontent.com/36base/girlsfrontline-extra-data/master/data/ko/characterScript.json').json()
+        for key, c_source in zip(context_source.keys(), context_source.values()):
+            doll_context = {
+                'drop': None,
+                'dialogue1': c_source['default']['DIALOGUE1'],
+                'dialogue2': c_source['default']['DIALOGUE2'],
+                'dialogue3': c_source['default']['DIALOGUE3'],
+                'soul_contract': c_source['default']['SOULCONTRACT'],
+                'introduce': c_source['default']['Introduce'],
+                'gain': c_source['default'].get('GAIN'),
+            }
+            c_doll, doll_c_create = DollDetail.objects.update_or_create(
+                doll=[item for item in Doll.objects.filter(id=key)][0],
+                defaults=doll_context,
+            )
+
+            c_doll.save()
+
 
 if __name__ == '__main__':
-    pool = Pool(4)
-    pool.map(Crawling().create_doll(), Crawling().create_equip())
+    # pool = Pool(4)
+    # Crawling().create_doll()
+    # Crawling().create_equip()
+    Crawling().create_doll_detail()
