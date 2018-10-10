@@ -38,6 +38,9 @@ class Doll(models.Model):
     grow = models.PositiveSmallIntegerField(blank=True, null=True)
     image = models.ImageField(upload_to='doll_image', blank=True, null=True)
     image_d = models.ImageField(upload_to='doll_image', blank=True, null=True)
+    equip_slot_01 = models.CharField(max_length=100, blank=True, null=True)
+    equip_slot_02 = models.CharField(max_length=100, blank=True, null=True)
+    equip_slot_03 = models.CharField(max_length=100, blank=True, null=True)
     is_upgrade = models.BooleanField()
 
     objects = models.Manager()

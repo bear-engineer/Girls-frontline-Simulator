@@ -1,5 +1,4 @@
 import os
-from multiprocessing import Pool
 import requests
 from django.core.files.base import ContentFile
 from selenium import webdriver
@@ -87,6 +86,19 @@ class Crawling:
             else:
                 rank = d_source.get('rank')
 
+            # equip data
+            equip_slot_01 = ''
+            for equip_type in d_source['equip1']:
+                equip_slot_01 += f',{equip_type}'
+
+            equip_slot_02 = ''
+            for equip_type in d_source['equip2']:
+                equip_slot_02 += f',{equip_type}'
+
+            equip_slot_03 = ''
+            for equip_type in d_source['equip3']:
+                equip_slot_03 += f',{equip_type}'
+
             # 전술 인형 기초정보
             doll_data = {
                 'id': d_source.get('id'),
@@ -97,6 +109,9 @@ class Crawling:
                 'kr_name': soup.select_one('div > div > h1').get_text(strip=True),
                 'grow': d_source.get('grow'),
                 'is_upgrade': is_upgrade,
+                'equip_slot_01': equip_slot_01,
+                'equip_slot_02': equip_slot_02,
+                'equip_slot_03': equip_slot_03,
             }
 
             # 전술 인형 기초 진형버프 정보
@@ -216,20 +231,6 @@ class Crawling:
                 cool_down=effect_grid.get('cooldown'),
                 armor=effect_grid.get('armor'),
             )
-            for data in d_source['equip1']:
-                doll.doll_equip_slot01.update_or_create(
-                    module=data,
-                )
-
-            for data in d_source['equip2']:
-                doll.doll_equip_slot02.update_or_create(
-                    module=data,
-                )
-
-            for data in d_source['equip3']:
-                doll.doll_equip_slot03.update_or_create(
-                    module=data,
-                )
 
             try:
                 mind_update_source = d_source['mindupdate']
@@ -390,7 +391,6 @@ class Crawling:
 
 
 if __name__ == '__main__':
-    # pool = Pool(4)
-    # Crawling().create_doll()
-    # Crawling().create_equip()
+    Crawling().create_doll()
     Crawling().create_doll_detail()
+    Crawling().create_equip()

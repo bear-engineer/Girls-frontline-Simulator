@@ -29,6 +29,8 @@ class DollStatus(models.Model):
     # 2번 크롤러
     speed = models.PositiveSmallIntegerField(blank=True, null=True)
     armor_piercing = models.PositiveSmallIntegerField(blank=True, null=True)
+    critical_harm_rate = models.PositiveSmallIntegerField(blank=True, null=True)
     critical_percent = models.PositiveSmallIntegerField(blank=True, null=True)
     bullet = models.PositiveSmallIntegerField(blank=True, null=True)
+    night_view = models.PositiveSmallIntegerField(blank=True, null=True)
     armor = models.PositiveSmallIntegerField(blank=True, null=True)
