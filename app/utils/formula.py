@@ -28,6 +28,8 @@ class EffectFormula:
         self.data = data
         self.status_value = 'pow,hit,rate,dodge,armor,bullet,critical_percent,critical_harm_rate,speed,night_view,armor_piercing'.split(
             ',')
+        self.grid_effect_value = 'pow,hit,rate,dodge,critical_percent,cool_down,armor'.split(',')
+        self.type = 'all,ar,rf,sg,smg,mg,hg'.split(',')
 
     def equip_validate(self):
         """
@@ -185,6 +187,28 @@ class EffectFormula:
             position_result.append(doll_position_value)
 
         return position_result
+
+    def grid_formula(self):
+        grid_result = [{item: [{types: {} for types in self.type}][0] for item in range(1, 9 + 1)}][0]
+        for data in self.position_formula():
+            grid_effect = [{
+                'pow': item.pow,
+                'hit': item.hit,
+                'rate': item.rate,
+                'dodge': item.dodge,
+                'critical_percent': item.critical_percent,
+                'cool_down': item.cool_down,
+                'armor': item.armor
+            } for item in DollEffectGrid.objects.filter(doll__id=data['id'])][0]
+            for in_position in data['position']:
+                for item in self.grid_effect_value:
+                    if grid_effect[item] is None:
+                        continue
+                    try:
+                        grid_result[in_position][data['type']][item] += grid_effect[item]
+                    except KeyError:
+                        grid_result[in_position][data['type']][item] = grid_effect[item]
+        return grid_result
         # class GetDoll:
         #     """
         #     기초 정보 불러오기
