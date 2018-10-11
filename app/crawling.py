@@ -89,15 +89,15 @@ class Crawling:
             # equip data
             equip_slot_01 = ''
             for equip_type in d_source['equip1']:
-                equip_slot_01 += f',{equip_type}'
+                equip_slot_01 += f'{equip_type}'
 
             equip_slot_02 = ''
             for equip_type in d_source['equip2']:
-                equip_slot_02 += f',{equip_type}'
+                equip_slot_02 += f'{equip_type}'
 
             equip_slot_03 = ''
             for equip_type in d_source['equip3']:
-                equip_slot_03 += f',{equip_type}'
+                equip_slot_03 += f'{equip_type}'
 
             # 전술 인형 기초정보
             doll_data = {

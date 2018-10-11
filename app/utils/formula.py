@@ -1,5 +1,8 @@
+from rest_framework import status
+
 from tactical_dolls.models import DollEffect, DollEffectGrid, DollEffectPos, DollStatus, Doll
 from tactical_equips.models import DollEquip, DollEquipStatus
+from .custom_exception import CustomException
 import math
 
 
@@ -48,7 +51,7 @@ class EffectFormula:
 
         # 제대인원 5명 초과시 에러
         if len(self.data) > 5:
-            raise ValueError('제대 인원의 한계 인원을 초과하였습니다.')
+            raise CustomException(detail='제대 인원의 한계 인원을 초과하였습니다.', status_code=status.HTTP_400_BAD_REQUEST)
 
         for equip in self.data:
             equip_slot = [
@@ -66,7 +69,7 @@ class EffectFormula:
                 if str(equip_data) in equip_slot[f'equip_slot_0{num}'] or equip_data is None:
                     pass
                 else:
-                    raise ValueError('해당하는 전술인형에 유효한 모듈이 아닙니다.')
+                    raise CustomException(detail='해당하는 전술인형에 유효한 모듈이 아닙니다.', status_code=status.HTTP_400_BAD_REQUEST)
         return self.data
 
     def status_equip_formula(self):

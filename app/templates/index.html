@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue@2.5.17/dist/vue.js"></script>
+</head>
+<body>
+{#{% block content %}#}
+{##}
+{#{% endblock %}#}
+<div id="app">
+    <h1>GF DATA</h1>
+    <button @click="getMembers()">Doll Members</button>
+    <ul>
+        <li v-for="doll in doll_list">
+            <p>${doll.codename}</p>
+            <p>${doll.type}</p>
+            <p>${doll.rank}</p>
+            <img v-bind:src="doll.image" alt="" width="300px">
+        </li>
+    </ul>
+</div>
+<div id="apps">
+    <h1>GF Detail</h1>
+    <button @click="getMembersDetail()">Doll Members</button>
+    <ul>
+        <li v-for="doll in doll_detail">
+            ${doll}
+
+        </li>
+    </ul>
+</div>
+
+
+<script>
+    new Vue({
+        el: '#app',
+        delimiters: ['${', '}'],
+        data: {
+            doll_list: [],
+        },
+        methods: {
+            getMembers: function () {
+                const vm = this;
+                axios({
+                    method: 'get',
+                    url: '/api/dolls/all/'
+                }).then(function (response) {
+                    vm.doll_list = response.data;
+                }).catch(function (response) {
+                    console.log('Error!');
+                });
+            }
+        }
+    })
+</script>
+<script>
+    new Vue({
+        el: '#apps',
+        delimiters: ['${', '}'],
+        data: {
+            doll_detail: [],
+        },
+        methods: {
+            getMembersDetail: function () {
+                const vm = this;
+                axios({
+                    method: 'get',
+                    url: '/api/dolls/all/1/'
+                }).then(function (response) {
+                    vm.doll_detail = response.data;
+                }).catch(function (response) {
+                    console.log('Error!');
+                });
+            }
+        }
+    })
+</script>
+</body>
+</html>

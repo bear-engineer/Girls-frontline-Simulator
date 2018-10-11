@@ -3,12 +3,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from . import api_urls as api
+from .. import views
 
 urlpatterns = [
                   path('members/', include('members.urls')),
                   path('dolls/', include('tactical_dolls.urls')),
                   path('admin/', admin.site.urls),
                   path('api/', include(api)),
+                  path('', views.index,)
 
               ] + static(
     prefix=settings.MEDIA_URL,
