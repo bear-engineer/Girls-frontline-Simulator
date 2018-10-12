@@ -64,6 +64,7 @@ class EffectFormula:
 
         # 제대인원 5명 초과시 에러
         if len(self.data) > 5:
+
             raise CustomException(detail='제대 인원의 한계 인원을 초과하였습니다.', status_code=status.HTTP_400_BAD_REQUEST)
 
         for equip in self.data:

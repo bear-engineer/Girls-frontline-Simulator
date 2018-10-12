@@ -87,17 +87,17 @@ class Crawling:
                 rank = d_source.get('rank')
 
             # equip data
-            equip_slot_01 = ''
+            equip_slot_01 = []
             for equip_type in d_source['equip1']:
-                equip_slot_01 += f'{equip_type}'
+                equip_slot_01.append(equip_type)
 
-            equip_slot_02 = ''
+            equip_slot_02 = []
             for equip_type in d_source['equip2']:
-                equip_slot_02 += f'{equip_type}'
+                equip_slot_02.append(equip_type)
 
-            equip_slot_03 = ''
+            equip_slot_03 = []
             for equip_type in d_source['equip3']:
-                equip_slot_03 += f'{equip_type}'
+                equip_slot_03.append(equip_type)
 
             # 전술 인형 기초정보
             doll_data = {
@@ -141,6 +141,8 @@ class Crawling:
                 'critical_percent': d_source['stats'].get('criticalPercent'),
                 'bullet': doll_status_bullet,
                 'armor': doll_status_armor,
+                'night_view': 0,
+                'critical_harm_rate': 0,
             }
 
             # 전술 인형 기본 스킬 정보
