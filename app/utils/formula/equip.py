@@ -26,7 +26,8 @@ class Equip:
                            'bullet,' \
                            'critical_percent,' \
                            'critical_harm_rate,' \
-                           'speed,night_vision,' \
+                           'speed,' \
+                           'night_vision,' \
                            'armor_piercing'.split(',')
 
     def slot_id(self):
@@ -35,7 +36,7 @@ class Equip:
         :return:
         """
         for num in range(1, 3 + 1):
-            if self.data[f'slot_0{num}'] is None:
+            if not self.data[f'slot_0{num}']:
                 continue
             else:
                 self.slot_id_list.append(self.data[f'slot_0{num}'])
@@ -57,7 +58,7 @@ class Equip:
         ][0]
         for num in range(1, 3 + 1):
             # 해당 필드가 None 일 경우 실행하지 않고 넘어감
-            if self.data[f'slot_0{num}'] is None:
+            if not self.data[f'slot_0{num}']:
                 continue
 
             # Doll Equip type, string 값 비교
@@ -87,6 +88,7 @@ class Equip:
                     pass
         return self.slot_id()
 
+    @property
     def equip_result(self):
         """
         all equip 합산
