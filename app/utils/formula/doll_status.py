@@ -29,6 +29,7 @@ class Doll:
             'id': self.id,
             'codename': [item.codename for item in self.doll_query][0],
             'center': self.data['center'],
-            'position': None,
+            'effect_position': None,
+            'effect_status': None,
             'status': self.status,
         }
