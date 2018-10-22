@@ -2,11 +2,15 @@ from tactical_dolls.models import DollEffectGrid
 
 
 class EffectGrid:
+    """
+    effect 효과 값 구하기
+    """
+
     def __init__(self, data):
         self.data = data
         self.id = self.data['id']
-        self.center = self.data['center']
 
+    @property
     def effect_grid_result(self):
         result = [{
             'pow': item.pow,

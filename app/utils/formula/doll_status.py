@@ -28,6 +28,7 @@ class Doll:
         return {
             'id': self.id,
             'codename': [item.codename for item in self.doll_query][0],
+            'image': self.doll_query[0].image,
             'center': self.data['center'],
             'effect_position': None,
             'effect_status': None,
