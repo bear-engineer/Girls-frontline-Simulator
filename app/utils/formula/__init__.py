@@ -1,9 +1,16 @@
-from utils.formula.effect_position import EffectPos
-from .equip import Equip
-from .doll_status import Doll
+import math
+
+from .effect_position import *
+from .equip import *
+from .doll_status import *
+from .effect_grid import *
 
 
 class Formula:
+    """
+    계산식 모듈 종합
+    """
+
     def __init__(self, data):
         self.data = data
         self.status_list = 'pow,' \
@@ -47,6 +54,31 @@ class Formula:
             # effect pos add
             status['effect_position'] = EffectPos(data).effect_position_result
 
+            # effect grid add
+            status['effect_status'] = EffectGrid(data).effect_grid_result
             # return list add
             self.result.append(status)
+
+            # effect formula
+            for pos in self.result:
+                for center in self.result:
+                    if center['center'] in pos['effect_position']['position'] and center['type'] == \
+                            pos['effect_position']['type'] or pos['effect_position']['type'] == 'ALL':
+                        for item in self.effect_status_list:
+
+                            # exception effect formula
+                            try:
+                                value = center['status'][item] * (1 + (pos['effect_status'][item] * 0.01))
+                                center['status'][item] += value
+
+                                # formula transfer
+                                if item == 'pow':
+                                    center['status'][item] = math.ceil(center['status'][item])
+                                elif item == 'armor' or 'rate' or 'dodge' or 'hit':
+                                    center['status'][item] = math.floor(center['status'][item])
+
+                            except KeyError:
+                                center['status'][item] = pos['effect_status'][item]
+                    else:
+                        continue
         return self.result

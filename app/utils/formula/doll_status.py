@@ -3,6 +3,10 @@ from tactical_dolls.models import Doll as Doll_query
 
 
 class Doll:
+    """
+    doll info & status data export
+    """
+
     def __init__(self, data):
         self.data = data
         self.id = self.data['id']
@@ -29,6 +33,7 @@ class Doll:
             'id': self.id,
             'codename': [item.codename for item in self.doll_query][0],
             'image': self.doll_query[0].image,
+            'type': self.doll_query[0].type,
             'center': self.data['center'],
             'effect_position': None,
             'effect_status': None,

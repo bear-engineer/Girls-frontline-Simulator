@@ -40,6 +40,6 @@ class EffectPos:
             for pos in default_pos_list:
                 pos_result.append(pos)
         return {
-            'type': self.doll_effect_query.type,
+            'type': self.doll_effect_query.type.upper(),
             'position': pos_result
         }
