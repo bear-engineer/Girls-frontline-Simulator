@@ -1,7 +1,7 @@
 from tactical_dolls.models import DollEffect, DollEffectPos
 
 
-class Effect:
+class EffectPos:
     def __init__(self, data):
         self.data = data
         self.id = self.data['id']
