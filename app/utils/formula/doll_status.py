@@ -1,5 +1,6 @@
 from tactical_dolls.models import DollStatus
 from tactical_dolls.models import Doll as Doll_query
+from tactical_dolls.serializer import DollSerializer
 
 
 class Doll:
@@ -32,7 +33,7 @@ class Doll:
         return {
             'id': self.id,
             'codename': [item.codename for item in self.doll_query][0],
-            'image': self.doll_query[0].image,
+            'image': self.doll_query[0].image.url,
             'type': self.doll_query[0].type,
             'center': self.data['center'],
             'effect_position': None,
