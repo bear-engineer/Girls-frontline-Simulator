@@ -44,6 +44,7 @@ class Formula:
         :return:
         """
         for data in self.data:
+
             status = Doll(data).status_result
             equip_status = Equip(data).equip_result
 

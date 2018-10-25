@@ -42,6 +42,9 @@ class Equip:
                 self.slot_id_list.append(self.data[f'slot_0{num}'])
         return self.slot_id_list
 
+    def doll_equip_query(self, data):
+        return DollEquipStatus.objects.select_related('equip').filter(equip__id=data)
+
     def validate(self):
         """
         유효한 모듈인지 검사
@@ -62,7 +65,8 @@ class Equip:
                 continue
 
             # Doll Equip type, string 값 비교
-            equip_type = [value.type for value in DollEquip.objects.filter(id=self.data[f'slot_0{num}'])][0]
+            # DollEquip.objects.filter(id=self.data[f'slot_0{num}'])
+            equip_type = [value.equip.type for value in self.doll_equip_query(self.data[f'slot_0{num}'])][0]
             if str(equip_type) in equip_slot[f'slot_0{num}']:
                 pass
             else:
@@ -70,7 +74,8 @@ class Equip:
 
         fit_gun_result = False
         for item in self.slot_id():
-            equip_objects = [value for value in DollEquip.objects.filter(id=item)][0]
+            # DollEquip.objects.filter(id=item)
+            equip_objects = [value.equip for value in self.doll_equip_query(item)][0]
 
             # 전용장비 검사
             private = equip_objects.is_private
@@ -113,7 +118,8 @@ class Equip:
                 'speed': value.speed,
                 'night_vision': value.night_view,
                 'armor_piercing': value.armor_piercing,
-            } for value in DollEquipStatus.objects.filter(equip__id=item)][0]
+                # DollEquipStatus.objects.filter(equip__id=item)
+            } for value in self.doll_equip_query(item)][0]
             for status_value in self.status_list:
                 result[status_value] += slot_status[status_value]
         return result

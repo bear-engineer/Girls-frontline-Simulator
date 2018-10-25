@@ -1,6 +1,4 @@
 from tactical_dolls.models import DollStatus
-from tactical_dolls.models import Doll as Doll_query
-from tactical_dolls.serializer import DollSerializer
 
 
 class Doll:
@@ -11,8 +9,7 @@ class Doll:
     def __init__(self, data):
         self.data = data
         self.id = self.data['id']
-        self.doll_query = [item for item in Doll_query.objects.filter(id=self.id)]
-        self.doll_status_query = [item for item in DollStatus.objects.filter(doll__id=self.id)]
+        self.doll_query = DollStatus.objects.select_related('doll').filter(doll__id=self.id)
         self.status = [{
             'hp': item.hp,
             'pow': item.pow,
@@ -26,15 +23,15 @@ class Doll:
             'bullet': item.bullet,
             'night_vision': item.night_view,
             'armor': item.armor,
-        } for item in self.doll_status_query][0]
+        } for item in self.doll_query][0]
 
     @property
     def status_result(self):
         return {
             'id': self.id,
-            'codename': [item.codename for item in self.doll_query][0],
-            'image': self.doll_query[0].image.url,
-            'type': self.doll_query[0].type,
+            'codename': [item.doll.codename for item in self.doll_query][0],
+            'image': [item.doll.image.url for item in self.doll_query][0],
+            'type': [item.doll.type for item in self.doll_query][0],
             'center': self.data['center'],
             'effect_position': None,
             'effect_status': None,
