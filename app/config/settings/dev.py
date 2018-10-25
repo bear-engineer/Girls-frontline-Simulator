@@ -6,6 +6,8 @@ WSGI_APPLICATION = 'config.wsgi.dev.application'
 DEBUG = True
 
 INSTALLED_APPS += [
+    # debug_toolbar
+    'debug_toolbar',
     'django_extensions',
 ]
 
@@ -19,3 +21,10 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+# debug toolbar setting
+INTERNAL_IPS = ('127.0.0.1',)
+MIDDLEWARE += [
+    # debug toolbar
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]

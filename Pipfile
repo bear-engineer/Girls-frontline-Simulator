@@ -5,11 +5,13 @@ name = "pypi"
 
 [packages]
 django = "*"
-lxml = "*"
+"psycopg2-binary" = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"
-"psycopg2-binary" = "*"
+lxml = "*"
+"bs4" = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.6.6"

@@ -13,5 +13,5 @@ class DollMindUpdate(models.Model):
         on_delete=models.CASCADE,
         related_name='doll_mind_update'
     )
-    core = models.PositiveSmallIntegerField(blank=True, null=True)
-    mind_piece = models.PositiveSmallIntegerField(blank=True, null=True)
+    core = models.PositiveIntegerField(blank=True, null=True)
+    mind_piece = models.PositiveIntegerField(blank=True, null=True)

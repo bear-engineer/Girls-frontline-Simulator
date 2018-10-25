@@ -15,7 +15,7 @@ class DollEffect(models.Model):
         related_name='doll_effect',
     )
     type = models.CharField(max_length=100, blank=True, null=True)
-    center = models.PositiveSmallIntegerField(blank=True, null=True)
+    center = models.PositiveIntegerField(blank=True, null=True)
 
 
 class DollEffectPos(models.Model):
@@ -25,7 +25,7 @@ class DollEffectPos(models.Model):
         related_name='doll_effect_pos',
         blank=True
     )
-    pos = models.PositiveSmallIntegerField(blank=True, null=True)
+    pos = models.PositiveIntegerField(blank=True, null=True)
 
 
 class DollEffectGrid(models.Model):
@@ -35,10 +35,10 @@ class DollEffectGrid(models.Model):
         related_name='doll_effect_grid',
         blank=True
     )
-    pow = models.PositiveSmallIntegerField(blank=True, null=True)
-    hit = models.PositiveSmallIntegerField(blank=True, null=True)
-    rate = models.PositiveSmallIntegerField(blank=True, null=True)
-    dodge = models.PositiveSmallIntegerField(blank=True, null=True)
-    critical_percent = models.PositiveSmallIntegerField(blank=True, null=True)
-    cool_down = models.PositiveSmallIntegerField(blank=True, null=True)
-    armor = models.PositiveSmallIntegerField(blank=True, null=True)
+    pow = models.PositiveIntegerField(blank=True, null=True)
+    hit = models.PositiveIntegerField(blank=True, null=True)
+    rate = models.PositiveIntegerField(blank=True, null=True)
+    dodge = models.PositiveIntegerField(blank=True, null=True)
+    critical_percent = models.PositiveIntegerField(blank=True, null=True)
+    cool_down = models.PositiveIntegerField(blank=True, null=True)
+    armor = models.PositiveIntegerField(blank=True, null=True)

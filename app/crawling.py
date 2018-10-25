@@ -393,6 +393,6 @@ class Crawling:
 
 
 if __name__ == '__main__':
-    Crawling().create_doll()
-    Crawling().create_doll_detail()
+    # Crawling().create_doll()
+    # Crawling().create_doll_detail()
     Crawling().create_equip()
