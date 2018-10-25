@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # debug_toolbar
+    'debug_toolbar',
+
     # django REST
     'django_filters',
     'rest_framework',
@@ -54,7 +57,13 @@ RAVEN_CONFIG = {
     'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
 }
 
+# debug toolbar setting
+INTERNAL_IPS = ('127.0.0.1',)
+
 MIDDLEWARE = [
+    # debug toolbar
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

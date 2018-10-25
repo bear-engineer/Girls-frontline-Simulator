@@ -23,4 +23,8 @@ class DollFormula(APIView):
         return Response(result)
 
     def get(self, request, *args, **kwargs):
-        return Response('get')
+        # test data
+        da = [{"id": 93, "center": 2, "slot_01": 102, "slot_02": None, "slot_03": None},
+              {"id": 2, "center": 1, "slot_01": None, "slot_02": None, "slot_03": None}]
+        result = Formula(da).formula_result
+        return Response(result)
