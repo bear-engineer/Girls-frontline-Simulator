@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 __all__ = (
@@ -15,6 +16,26 @@ class Doll(models.Model):
     grow = models.PositiveIntegerField()
     image = models.ImageField(upload_to='doll_image')
     image_d = models.ImageField(upload_to='doll_image_d')
+    obtain = ArrayField(
+        ArrayField(
+            models.PositiveSmallIntegerField()
+        ),
+    )
+    slot_01 = ArrayField(
+        ArrayField(
+            models.CharField(max_length=20, blank=True, null=True),
+        ),
+    )
+    slot_02 = ArrayField(
+        ArrayField(
+            models.CharField(max_length=20, blank=True, null=True),
+        ),
+    )
+    slot_03 = ArrayField(
+        ArrayField(
+            models.CharField(max_length=20, blank=True, null=True),
+        ),
+    )
 
     def __str__(self):
         return self.code_name

@@ -13,7 +13,6 @@ class Skill(models.Model):
     )
     id = models.PositiveIntegerField(unique=True, primary_key=True)
     code_name = models.CharField(max_length=50)
-    skill_type = models.CharField(max_length=30)
     skill_image = models.ImageField(upload_to='skill_image', blank=True, null=True)
     cool_down_type = models.CharField(max_length=30)
     initial_cool_down = models.PositiveIntegerField()
@@ -25,5 +24,5 @@ class SkillData(models.Model):
         'Skill',
         on_delete=models.CASCADE,
     )
-    level = models.PositiveSmallIntegerField()
-    cool_down = models.PositiveIntegerField()
+    level = models.PositiveSmallIntegerField(blank=True, null=True)
+    cool_down = models.PositiveIntegerField(blank=True, null=True)
