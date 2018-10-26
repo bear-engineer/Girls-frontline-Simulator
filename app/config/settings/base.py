@@ -23,6 +23,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # Add Module
+    'doll.apps.DollConfig',
+
+    # test Module
     'members',
     'tactical_dolls',
     'tactical_fairys',
