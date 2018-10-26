@@ -24,6 +24,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # Add Module
     'doll.apps.DollConfig',
+    'equip.apps.EquipConfig',
 
     # test Module
     'members',
