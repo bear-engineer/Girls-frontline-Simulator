@@ -7,12 +7,15 @@ import requests
 
 class DollUpdate:
     def __init__(self):
-        self.data = requests.get(
-            'https://raw.githubusercontent.com/36base/girlsfrontline-core/master/data/doll.json'
+        self.base_url = 'https://raw.githubusercontent.com/36base/'
+        self.data = requests.get(f'{self.base_url}girlsfrontline-core/master/data/doll.json').json()
+        self.image_data = 'https://github.com/36base/girlsfrontline-resources/blob/master/pic/pic_'
+        self.skill_image_data = f'{self.base_url}girlsfrontline-resources/master/icon/skillicon/'
+        self.voice_data = requests.get(
+            f'{self.base_url}girlsfrontline-extra-data/master/data/locale/ko-KR/NewCharacterVoice.json'
         ).json()
 
     def update(self):
-        data = [item for item in self.data]
 
         def none_zero(value):
             if not value:
@@ -34,7 +37,7 @@ class DollUpdate:
             }
             return skill_data
 
-        for item in data:
+        for item in self.data:
             default_data = {
                 'id': item['id'],
                 'code_name': item['codename'],
@@ -61,6 +64,10 @@ class DollUpdate:
                 'night_view': none_zero(item['stats'].get('nightView')),
                 'armor': none_zero(item['stats'].get('armor')),
             }
+
+            image = f'{self.image_data}{item.get("codename").lower()}.png?raw=true'
+            image_d = f'{self.image_data}{item.get("codename").lower()}_D.png?raw=true'
+
             effect_data = {
                 'type': item['effect']['effectType'].upper(),
                 'center': item['effect']['effectCenter'],
@@ -76,11 +83,32 @@ class DollUpdate:
                 'cool_down': none_zero(item['effect']['gridEffect'].get('cool_down')),
                 'armor': none_zero(item['effect']['gridEffect'].get('armor')),
             }
+
+            voice_item = self.voice_data.get(item['codename'])
+            if not voice_item:
+                pass
+            else:
+                voice_data = {
+                    'doll': '',
+                    'dialogue01': voice_item.get('dialogue1'),
+                    'dialogue02': voice_item.get('dialogue2'),
+                    'dialogue03': voice_item.get('dialogue3'),
+                    'introduce': voice_item.get('introduce'),
+                    'allhallows': voice_item.get('allhallows'),
+                    'soul_contract': voice_item.get('soulcontract'),
+                    'dialogue_wedding': voice_item.get('dialoguewedding'),
+                    'gain': voice_item.get('gain'),
+                }
+
             skill01_data = skill_value_data(item, 'skill1')
+            skill01_image = f'{self.skill_image_data}{skill01_data["data"]["code_name"].lower()}.png?raw=true'
             if not item.get('skill2'):
                 pass
             else:
                 skill02_data = skill_value_data(item, 'skill2')
+
+            # print(default_data)
+            # Voice.objects.get(code_name=item_voice)
 
 
 if __name__ == '__main__':

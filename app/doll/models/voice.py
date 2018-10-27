@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 __all__ = (
@@ -17,15 +18,20 @@ class Voice(models.Model):
     introduce = models.TextField(blank=True, null=True)
     allhallows = models.TextField(blank=True, null=True)
     dialogue_wedding = models.TextField(blank=True, null=True)
+    soul_contract = ArrayField(
+        ArrayField(
+            models.TextField(blank=True, null=True)
+        ),
+    )
     gain = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f'Voice : {self.doll.code_name}'
 
 
-class VoiceSoul(models.Model):
-    voice = models.ForeignKey(
-        'Voice',
-        on_delete=models.CASCADE,
-    )
-    script = models.TextField(blank=True, null=True)
+# class VoiceSoul(models.Model):
+#     voice = models.ForeignKey(
+#         'Voice',
+#         on_delete=models.CASCADE,
+#     )
+#     script = models.TextField(blank=True, null=True)
