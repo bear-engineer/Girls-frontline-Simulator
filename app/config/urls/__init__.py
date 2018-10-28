@@ -7,7 +7,7 @@ from .. import views
 
 urlpatterns = [
                   path('members/', include('members.urls')),
-                  path('dolls/', include('tactical_dolls.urls')),
+                  # path('dolls/', include('tactical_dolls.urls')),
                   path('admin/', admin.site.urls),
                   path('api/', include(api)),
                   path('', views.index, )

@@ -1,5 +1,5 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
-from app.doll.models import Doll
 
 
 class Equip(models.Model):
@@ -24,19 +24,20 @@ class Equip(models.Model):
     speed = models.SmallIntegerField()
     night_view = models.SmallIntegerField()
     armor_piercing = models.SmallIntegerField()
-    private_field = models.ManyToManyField(
-        'self',
-        through='EquipPrivate',
-        through_fields=('equip', 'doll'),
+    private_field = ArrayField(
+        ArrayField(
+            models.PositiveIntegerField()
+        ), blank=True, null=True,
     )
 
-
-class EquipPrivate(models.Model):
-    equip = models.ForeignKey(
-        'Equip',
-        on_delete=models.CASCADE
-    )
-    doll = models.ForeignKey(
-        Doll,
-        on_delete=models.CASCADE
-    )
+# class EquipPrivate(models.Model):
+#     equip = models.ForeignKey(
+#         'Equip',
+#         on_delete=models.CASCADE,
+#         related_name='private_equip_module'
+#     )
+#     doll = models.ForeignKey(
+#         Doll,
+#         on_delete=models.CASCADE,
+#         related_name='private_equip_apply_doll'
+#     )

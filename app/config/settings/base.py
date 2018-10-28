@@ -27,10 +27,10 @@ INSTALLED_APPS = [
     'equip.apps.EquipConfig',
 
     # test Module
-    'members',
-    'tactical_dolls',
-    'tactical_fairys',
-    'tactical_equips',
+    'members.apps.MembersConfig',
+    # 'tactical_dolls',
+    # 'tactical_fairys',
+    # 'tactical_equips',
 
     # Base Module
     'django.contrib.admin',

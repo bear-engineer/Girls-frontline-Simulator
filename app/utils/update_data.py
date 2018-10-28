@@ -1,8 +1,13 @@
 import os
+
 import requests
-
-
 # from django.core.files.base import ContentFile
+import django
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.dev')
+django.setup()
+
+from doll.models import Doll
 
 
 class DollUpdate:
@@ -106,6 +111,9 @@ class DollUpdate:
                 pass
             else:
                 skill02_data = skill_value_data(item, 'skill2')
+
+            doll, doll_create = Doll.objects.prefetch_related('effect_set').update_or_create()
+            # print(doll.effect_set.center)
 
             # print(default_data)
             # Voice.objects.get(code_name=item_voice)
