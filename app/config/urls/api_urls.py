@@ -5,5 +5,5 @@ urlpatterns = [
     path('members/', include('members.urls.api_urls')),
     # 전술 인형
     path('doll/', include('doll.urls.api_urls')),
-    # path('equip/', include('tactical_equips.urls.api_urls')),
+    path('equip/', include('equip.urls.api_urls')),
 ]

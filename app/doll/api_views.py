@@ -18,11 +18,3 @@ class DollList(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     queryset = Doll.objects.all().order_by('id')
     serializer_class = DollListSerializer
-    # def get(self, request, *args, **kwargs):
-    #     result = []
-    #     queryset = Doll.objects.values('id', 'code_name', 'rank', 'type', 'image').order_by('id')
-    #     for item in queryset:
-    #         item['image'] = settings.MEDIA_URL + item['image']
-    #         result.append(item)
-    #     pagination_class = StandardResultsSetPagination
-    #     return Response(result)
