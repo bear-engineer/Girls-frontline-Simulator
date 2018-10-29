@@ -11,11 +11,12 @@ class Testclasss(TestCase):
             # print(Doll.objects.all())
             # print(Equip.objects.all())
             # for i in range(3):
-            print(Doll.objects.filter(Q(id=1) | Q(id=2) | Q(id=3)).prefetch_related(
+            query = Doll.objects.filter(Q(id=1) | Q(id=2) | Q(id=3)).prefetch_related(
                 'effect_set__effectgrid_set',
                 'voice_set',
                 'skill_set__skilldata_set',
-            ).values('effect__effectgrid__pow'))
+            ).values('effect__effectgrid__pow')
+            print(query[0].effect_set.all())
 
 
 if __name__ == '__main__':

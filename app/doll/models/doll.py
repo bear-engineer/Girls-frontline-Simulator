@@ -58,3 +58,6 @@ class Status(models.Model):
     speed = models.PositiveIntegerField()
     night_view = models.PositiveIntegerField()
     armor = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ['id']
