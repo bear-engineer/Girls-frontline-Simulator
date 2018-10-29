@@ -1,5 +1,7 @@
 from django.db import models
 
+from .doll import Doll
+
 __all__ = (
     'Skill',
     'SkillData',
@@ -8,12 +10,12 @@ __all__ = (
 
 class Skill(models.Model):
     doll = models.ForeignKey(
-        'Doll',
+        Doll,
         on_delete=models.CASCADE,
     )
-    id = models.PositiveIntegerField(unique=True, primary_key=True)
     code_name = models.CharField(max_length=50)
     skill_image = models.ImageField(upload_to='skill_image', blank=True, null=True)
+    skill_type = models.CharField(max_length=20)
     cool_down_type = models.CharField(max_length=30)
     initial_cool_down = models.PositiveIntegerField()
     consumption = models.PositiveIntegerField()
