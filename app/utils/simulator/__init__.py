@@ -99,10 +99,10 @@ class Status:
         for item in self.query:
 
             status_list = 'hp,armor,hit,pow,dodge,rate'.split(',')
-            doll_type = item['doll_info']['type'].lower()
-            grow = item['doll_info']['grow']
+            doll_type = item['type'].lower()
+            grow = item['grow']
             for stats in status_list:
-                doll_status = float(item['doll_info'][f'status__{stats}'])
+                doll_status = float(item[f'status__{stats}'])
                 if stats == 'hp' or stats == 'armor':
                     try:
                         attr_data = float(self.attr_data[doll_type][stats])
@@ -114,14 +114,14 @@ class Status:
                         basic_formula = math.ceil(
                             (basic_data0 + ((level - 1) * basic_data1)) * attr_data * doll_status / 100
                         )
-                        item['doll_info'][f'status__{stats}'] = basic_formula * dummy
+                        item[f'status__{stats}'] = basic_formula * dummy
                     else:
                         basic_data0 = float(self.grow_data['after100']['basic'][stats][0])
                         basic_data1 = float(self.grow_data['after100']['basic'][stats][1])
                         basic_formula = math.ceil(
                             (basic_data0 + ((level - 1) * basic_data1)) * attr_data * doll_status / 100
                         )
-                        item['doll_info'][f'status__{stats}'] = basic_formula * dummy
+                        item[f'status__{stats}'] = basic_formula * dummy
                 else:
                     attr_data = float(self.attr_data[doll_type][stats])
 
@@ -137,7 +137,7 @@ class Status:
                         (grow_data1 + ((level - 1) * grow_data0)) * attr_data * doll_status * grow / 100 / 100
                     )
 
-                    item['doll_info'][f'status__{stats}'] = normal_basic_formula + normal_grow_formula
+                    item[f'status__{stats}'] = normal_basic_formula + normal_grow_formula
 
         return self.query
 
@@ -146,37 +146,6 @@ class Simulator:
 
     def __init__(self, data):
         self.data = data
-        self.doll_grow = {
-            "after100": {
-                "basic": {
-                    "armor": [13.979, 0.04],
-                    "hp": [96.283, 0.138]
-                },
-                "grow": {
-                    "dodge": [0.075, 22.572],
-                    "hit": [0.075, 22.572],
-                    "pow": [0.06, 18.018],
-                    "rate": [0.022, 15.741]
-                }
-            },
-            "normal": {
-                "basic": {
-                    "armor": [2, 0.161],
-                    "dodge": [5],
-                    "hit": [5],
-                    "hp": [55, 0.555],
-                    "pow": [16],
-                    "rate": [45],
-                    "speed": [10]
-                },
-                "grow": {
-                    "dodge": [0.303, 0],
-                    "hit": [0.303, 0],
-                    "pow": [0.242, 0],
-                    "rate": [0.181, 0]
-                }
-            }
-        }
         self.doll_data = Doll.objects.filter(id__in=[item['id'] for item in self.data]).prefetch_related(
             'effect_set', 'effect_set__effectgrid_set', 'status_set'
         ).values(
@@ -215,35 +184,6 @@ class Simulator:
         self.result = []
 
     @cached_property
-    def default_status(self):
-        level = 100
-        for item in self.doll_data:
-            # hp & armor
-            for basic_stats in 'hp,armor'.split(','):
-
-                if level >= 100:
-                    basic_data = self.doll_grow['after100']['basic']
-                    base_data_1 = float(basic_data[basic_stats][0])
-                    level_var = float((level - 1)) * float(basic_data[basic_stats][1])
-                    attr = self.status_att[f'{item["type"].lower()}'].get(basic_stats)
-                    status = float(item[f'status__{basic_stats}'])
-                    if not attr:
-                        continue
-                    formula = math.ceil(math.ceil(base_data_1 + level_var) * math.ceil(float(attr) * status) / 100)
-
-                    if basic_stats == 'hp':
-                        item[f'status__{basic_stats}'] = formula * 5
-                    else:
-                        item[f'status__{basic_stats}'] = formula
-
-                grow_data = self.doll_grow['after100']['grow']
-                for nomal_stats in 'dodge,hit,pow,rate'.split(','):
-                    grow_data_0 = grow_data[nomal_stats][0]
-                    grow_data_1 = grow_data[nomal_stats][1]
-
-            print(item)
-
-    @cached_property
     def equip_query_set(self):
         result = []
         for item in self.data:
@@ -256,7 +196,7 @@ class Simulator:
     @cached_property
     def doll_query_set(self):
         data_set = []
-        for index, item in enumerate(self.doll_data):
+        for index, item in enumerate(self.status_result):
             data = {
                 'position': self.data[index]['position'],
                 'position_xy': [],
@@ -266,8 +206,9 @@ class Simulator:
             data_set.append(data)
         return data_set
 
-    def simulator_result(self):
-        return Status(self.doll_query_set).formula
+    @cached_property
+    def status_result(self):
+        return Status(self.doll_data).formula
 
 
 class Positions:
