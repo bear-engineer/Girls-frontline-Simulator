@@ -24,21 +24,18 @@ RUN     pip3 install -r     /tmp/requirements.txt
 
 #projects dir copy
 COPY    ./  /srv/project
-COPY    ./.config/app.nginx     /etc/nginx/sites-available/
 
 RUN     rm -rf /etc/nginx/sites-available/*
 RUN     rm -rf /etc/nginx/sites-enabled/*
 
 RUN     cp -f /srv/project/.config/app.nginx \
-              /etc/nginx/sites-available/
+              /etc/nginx/sites-available/app.nginx
+
+#RUN     cp -f /srv/project/.config/nginx.conf \
+#              /etc/nginx/nginx.conf
 
 RUN     ln -sf /etc/nginx/sites-available/app.nginx \
                /etc/nginx/sites-enabled/app.nginx
-
-WORKDIR /srv/project
-RUN     pip3 install -r requirements.txt
-
-
 
 #run commend
 WORKDIR /srv/project/app
