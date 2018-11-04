@@ -46,7 +46,7 @@ class SimulatorView(APIView):
             }
         ]
         print(request.GET)
-        return Response(Simulator(data).effect_position())
+        return Response(Simulator(data).doll_query_set)
 
     def post(self, request, *args, **kwargs):
         return Response(Simulator(request).test_return)
