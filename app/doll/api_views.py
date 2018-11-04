@@ -46,28 +46,28 @@ class SimulatorView(APIView):
             },
             {
                 "id": 2,
-                "position": 5,
+                "position": 3,
                 "slot_01": None,
                 "slot_02": 2,
                 "slot_03": None,
             },
             {
                 "id": 3,
-                "position": 5,
+                "position": 7,
                 "slot_01": None,
                 "slot_02": 2,
                 "slot_03": None,
             },
             {
                 "id": 4,
-                "position": 5,
+                "position": 1,
                 "slot_01": None,
                 "slot_02": 2,
                 "slot_03": None,
             }
         ]
         print(request.GET)
-        return Response(Simulator(data).doll_query_set)
+        return Response(Simulator(data).position_set())
 
     def post(self, request, *args, **kwargs):
         return Response(Simulator(request).test_return)
