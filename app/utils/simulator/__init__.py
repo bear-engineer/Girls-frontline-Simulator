@@ -65,6 +65,7 @@ class Simulator:
                 'position_xy': [],
                 'id': self.data[index]['id'],
                 'doll_info': item,
+                'effect_info': {},
             }
             data_set.append(data)
         return data_set
@@ -73,11 +74,14 @@ class Simulator:
     def status_result(self):
         return Status(self.doll_data).formula
 
+    def position_set(self):
+        return Positions(self.doll_query_set).position_set_effect()
+
 
 class Positions:
     def __init__(self, query):
-
         self.query_set = query
+        self.effect_list = 'pow,hit,rate,dodge,critical_percent,cool_down,armor'.split(',')
         self.relative_position = {
             1: (-1, 1),
             2: (0, 1),
@@ -101,3 +105,27 @@ class Positions:
                     self.relative_position[data['position']][1] - self.relative_position[item][1]
                 ))
         return self.query_set
+
+    def position_set_effect(self):
+        query = self.get_position()
+        result = []
+        for data in query:
+            doll_position = self.relative_position[data['position']]
+            for item in query:
+                doll_type = data['doll_info']['type']
+                set_effect_type = item['doll_info']['effect__type']
+
+                if doll_type == set_effect_type or item['doll_info']['effect__type'] == 'ALL':
+                    if doll_position in item['position_xy']:
+                        for effect in self.effect_list:
+                            print(effect)
+                            effect_set = item['doll_info'][f'effect__effectgrid__{effect}']
+                            if effect_set == 0:
+                                continue
+                            try:
+                                data['effect_info'][effect] += item['doll_info'][f'effect__effectgrid__{effect}']
+                            except KeyError:
+                                data['effect_info'][effect] = item['doll_info'][f'effect__effectgrid__{effect}']
+
+            result.append(data)
+        return result

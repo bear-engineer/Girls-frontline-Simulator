@@ -43,6 +43,27 @@ class SimulatorView(APIView):
                 "slot_01": 3,
                 "slot_02": None,
                 "slot_03": 1,
+            },
+            {
+                "id": 2,
+                "position": 5,
+                "slot_01": None,
+                "slot_02": 2,
+                "slot_03": None,
+            },
+            {
+                "id": 3,
+                "position": 5,
+                "slot_01": None,
+                "slot_02": 2,
+                "slot_03": None,
+            },
+            {
+                "id": 4,
+                "position": 5,
+                "slot_01": None,
+                "slot_02": 2,
+                "slot_03": None,
             }
         ]
         print(request.GET)
