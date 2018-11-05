@@ -1,3 +1,6 @@
+import math
+
+
 class Positions:
     def __init__(self, query):
         self.query_set = query
@@ -38,7 +41,6 @@ class Positions:
                 if doll_type == set_effect_type or item['doll_info']['effect__type'] == 'ALL':
                     if doll_position in item['position_xy']:
                         for effect in self.effect_list:
-                            print(effect)
                             effect_set = item['doll_info'][f'effect__effectgrid__{effect}']
                             if effect_set == 0:
                                 continue
@@ -49,3 +51,21 @@ class Positions:
 
             result.append(data)
         return result
+
+    def position_effect_calculation(self):
+        query = self.position_set_effect()
+        for data in query:
+            for item in self.effect_list:
+                try:
+                    doll_status = data['doll_info'][f'status__{item}']
+                    effect_value = data['effect_info'][item]
+                    calculation = doll_status * (1 + (effect_value * 0.01))
+                    if item == 'pow':
+                        data['doll_info'][f'status__{item}'] = math.ceil(calculation)
+                    elif item == 'armor' or 'rate' or 'dodge' or 'hit':
+                        data['doll_info'][f'status__{item}'] = math.floor(calculation)
+                    else:
+                        data['doll_info'][f'status__{item}'] = calculation
+                except KeyError:
+                    continue
+        return query

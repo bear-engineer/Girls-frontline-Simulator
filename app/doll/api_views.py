@@ -34,40 +34,40 @@ class SimulatorView(APIView):
                 "id": 1,
                 "position": 5,
                 "slot_01": None,
-                "slot_02": 2,
+                "slot_02": None,
                 "slot_03": None,
             },
             {
                 "id": 1002,
-                "position": 6,
-                "slot_01": 3,
+                "position": 3,
+                "slot_01": 61,
                 "slot_02": None,
-                "slot_03": 1,
+                "slot_03": None,
             },
             {
                 "id": 2,
                 "position": 3,
                 "slot_01": None,
-                "slot_02": 2,
+                "slot_02": None,
                 "slot_03": None,
             },
             {
                 "id": 3,
                 "position": 7,
                 "slot_01": None,
-                "slot_02": 2,
+                "slot_02": None,
                 "slot_03": None,
             },
             {
                 "id": 4,
                 "position": 1,
                 "slot_01": None,
-                "slot_02": 2,
+                "slot_02": None,
                 "slot_03": None,
             }
         ]
         print(request.GET)
-        return Response(Simulator(data).position_set())
+        return Response(Simulator(data).position_result)
 
     def post(self, request, *args, **kwargs):
         return Response(Simulator(request).test_return)
