@@ -18,6 +18,7 @@ RUN     apt -y install python3-pip
 # server module install
 RUN     apt -y install nginx
 RUN     pip3 install uwsgi
+RUN     apt -y install supervisor
 
 COPY    requirements.txt    /tmp/
 RUN     pip3 install -r     /tmp/requirements.txt
@@ -30,6 +31,8 @@ RUN     rm -rf /etc/nginx/sites-enabled/*
 
 RUN     cp -f /srv/project/.config/app.nginx \
               /etc/nginx/sites-available/app.nginx
+RUN     cp -f /srv/project/.config/supervisor.conf \
+              /etc/supervisor/conf.d/supervisor.conf
 
 #RUN     cp -f /srv/project/.config/nginx.conf \
 #              /etc/nginx/nginx.conf
@@ -44,3 +47,7 @@ RUN     python3 manage.py collectstatic --noinput
 #RUN     uwsgi --http :8000 --chdir /srv/project/app --wsgi config.wsgi
 #is local server
 #CMD     python3 manage.py runserver 0:8000
+
+EXPOSE      80
+
+CMD     supervisord -n
