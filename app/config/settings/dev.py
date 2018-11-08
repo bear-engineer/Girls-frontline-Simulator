@@ -9,6 +9,7 @@ INSTALLED_APPS += [
     # debug_toolbar
     'debug_toolbar',
     'django_extensions',
+    'corsheaders',
 ]
 
 DATABASES = {
@@ -22,9 +23,15 @@ DATABASES = {
     }
 }
 
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+)
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.'
+
 # debug toolbar setting
 INTERNAL_IPS = ('127.0.0.1',)
 MIDDLEWARE += [
     # debug toolbar
+    'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
