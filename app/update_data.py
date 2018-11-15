@@ -236,5 +236,5 @@ class EquipUpdate:
 
 
 if __name__ == '__main__':
-    # DollUpdate().update(),
+    DollUpdate().update(),
     EquipUpdate().update()
